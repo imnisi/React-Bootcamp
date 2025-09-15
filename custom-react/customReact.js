@@ -12,7 +12,7 @@
 //  domElement.setAttribute("target", reactElement.props.target);
 
 //  Step 4: Put it in the webpage
-//  document.body.append(domElement);
+//  rootContainer.body.append(domElement);
 // }
 
 // Better way:
@@ -31,7 +31,7 @@ function customRender(reactElement, rootContainer) {
   }
 
   // Step 4: Put it in the webpage
-  document.body.append(domElement);
+  rootContainer.append(domElement);
 }
 
 const reactElement = {
