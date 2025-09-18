@@ -43,7 +43,7 @@ function InterviewCounterApp() {
     setCounter((prev) => prev + 1);
   };
 
-  //# prev = React ka taaza state value deta hai
+  //# prev = React ka current state value deta hai
   //# Normal setState = Purana value use karta rahega (stale)
   //# Functional setState = Har baar latest value leke calculate karta hai
   //# Yaad rakh: Jab bhi previous state pe depend karna ho, tab functional update use kar!
