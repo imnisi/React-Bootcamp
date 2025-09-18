@@ -12,8 +12,8 @@ createRoot(document.getElementById("root")).render(
     {/* <App /> */}
     {/* <Hero /> */}
     <div className="flex gap-4">
-      <Card userName={"Nishant Kumar"} image={img1} btnText={"See him"} />
-      <Card userName={"Surbhi Deshmukh"} image={img2} btnText={"See her"} />
+      <Card userName="Nishant Kumar" image={img1} btnText="See him" />
+      <Card userName="Surbhi Deshmukh" image={img2} btnText="See her" />
     </div>
   </StrictMode>
 );
