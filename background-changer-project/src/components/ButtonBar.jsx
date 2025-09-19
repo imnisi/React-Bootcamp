@@ -10,7 +10,7 @@ function ButtonBar() {
     >
       <div
         id="main-parent"
-        className="flex flex-wrap gap-3 p-5 bg-orange-500 rounded-xl shadow-lg"
+        className="flex flex-wrap gap-3 p-4 bg-orange-500 rounded-3xl shadow-lg"
       >
         <button
           className="px-10 py-1.5 rounded-full font-medium text-white bg-red-500 hover:bg-red-600 transition-all shadow-md hover:shadow-lg"
