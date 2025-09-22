@@ -1,0 +1,74 @@
+# Short answer
+
+*Memoized = cached
+Koi function ya calculation ka result ek baar compute karke store karna — taaki jab same input phir se aaye, dobara se compute na karna pade; instead stored result return kar do.
+
+# Simple Hinglish explanation
+
+Socho tum exam ke multiple-choice answers likh ke rakhte ho. Agar same sawaal firse aaya, tum dubara sochne ki jagah pehle se likha answer copy-paste kar doge — wahi idea hai memoization.
+
+# Quick JavaScript example (pure memoization)
+
+Naive fibonacci (slow for big n):
+
+function fib(n) {
+  if (n < 2) return n;
+  return fib(n-1) + fib(n-2);
+}
+
+Memoized fibonacci (fast because it caches results):
+const cache = {};
+function fibMemo(n){
+  if (n in cache) return cache[n];
+  if (n < 2) return (cache[n] = n);
+  cache[n] = fibMemo(n-1) + fibMemo(n-2);
+  return cache[n];
+}
+# React-context: what gets memoized
+
+`useMemo(fn, deps)` — memoizes a value (expensive calculation) so it’s recomputed only when `deps` change.
+
+*Expensive calculation
+? const expensiveValue = useMemo(() => {
+? return heavyCalculation(data);
+? }, [data]); // Only recalculate when data changes
+
+`useCallback(fn, deps)` — memoizes a function reference (keeps the same function identity until deps change).
+
+* Function that doesn't change unnecessarily
+? const handleClick = useCallback(() => {
+?  doSomething(id);
+? }, [id]); // Only recreate function when id changes
+
+`React.memo(Component)` — memoizes rendering of a component: it skips re-render if props are shallowly equal.
+
+* Component that doesn't re-render unnecessarily
+? const ExpensiveComponent = memo(({ data }) => {
+?  return <div>{data}</div>;
+? }); // Only re-render when props actually change
+
+Example differences:
+
+* `useMemo` = “cache this computed value”
+* `useCallback` = “keep this function reference stable”
+* `React.memo` = “skip rendering this child if props didn’t change”
+
+# Why memoize? (pros & cons)
+
+Pros:
+
+* Faster runtime for expensive computations.
+* Fewer unnecessary renders in React (performance gains).
+
+Cons:
+
+* Extra memory to store cached results.
+* Complexity — may introduce stale results if dependencies are wrong.
+* Overhead: memoizing cheap operations can be slower than recomputing.
+
+# Rule of thumb
+
+Memoize only when:
+The computation is expensive, or
+We need stable identity to prevent expensive child re-renders.
+
