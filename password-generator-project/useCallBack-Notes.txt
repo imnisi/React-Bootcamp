@@ -2,7 +2,8 @@ For this PasswordGenerator, not using useCallback is perfectly fine and simpler.
 
 What useCallback actually does:
 It returns a memoized function reference that stays the same across renders until one of its dependencies changes.
-It does not memoize function results; it only stabilizes identity (referential equality).
+It does not memoize function results; it only stabilizes id
+entity (referential equality).
 
 # Simpler Terms:
 
@@ -14,7 +15,7 @@ Socho tum har render pe ek naya mobile bana rahe ho. Agar child component check 
 useCallback ye ensure karta hai ki jab tak dependencies change na ho, wahi mobile (same function reference) rahe — child bina reason ke re-render nahi karega.
 
 #useCallback ye ensure karta hai ki jab tak dependencies change na ho, wahi mobile (same function reference) rahe — child bina reason ke re-render nahi karega. 
-#2) With useCallback — child won't re-render just because function reference changed 
+#2 With useCallback — child won't re-render just because function reference changed 
 
 *these are contradictory, I am not getting
 

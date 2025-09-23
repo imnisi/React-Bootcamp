@@ -110,6 +110,33 @@ function PasswordGenerator() {
           </label>
         </div>
       </div>
+      {/* Explanation Section */}
+      <div className="mt-6 p-4 bg-white/80 rounded-lg shadow-inner text-sm text-gray-800">
+        <h2 className="font-bold text-lg mb-3">
+            How this works (with useCallback):
+        </h2>
+        <ol className="list-decimal pl-5 space-y-2">
+          <li>
+            <strong>State Updates:</strong> When you move the slider or toggle
+            checkboxes, the <code>length</code>, <code>includeNumbers</code>, or{" "}
+            <code>includeSpecialChars</code> state updates.
+          </li>
+          <li>
+            <strong>useCallback:</strong> The <code>pwdGenerator</code> function
+            is memoized. It keeps the same reference between renders unless one
+            of its dependencies changes.
+          </li>
+          <li>
+            <strong>useEffect:</strong> Watches <code>pwdGenerator</code>. When
+            the function reference changes (because dependencies changed),
+            <code>useEffect</code> calls it to generate a new password.
+          </li>
+          <li>
+            <strong>Password Display:</strong> The newly generated password is
+            shown in the input box, and you can copy it with the button.
+          </li>
+        </ol>
+      </div>
     </div>
   );
 }

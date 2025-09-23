@@ -1,0 +1,18 @@
+# Socho is project me password banana ek automatic machine jaisa hai:
+
+Tumhare paas teen settings hain → length (slider), checkNumber (numbers include?) and checkChar (symbols include?)
+
+Jab bhi in me se koi setting change hoti hai → React firse render karta hai.
+
+ #useEffect ko hum bolte hain:
+"Jab bhi length, checkNumber, ya checkChar change ho → ek naya password bana dena."
+Matlab useEffect ek automatic trigger hai jo depend karta hai un states par.
+Har bar state update → useEffect run hota hai → naya password generate hota hai → UI update ho jata hai.
+
+# Difference from useCallback version
+
+With useCallback, tum ek function banate ho aur useEffect us function ko call karta hai.
+Without useCallback, tum directly useEffect ke andar password generate kar rahe ho.
+
+Dono se same result milega, kyunki tum function ko kisi child component ko pass nahi kar rahe ho.
+Yaha simple approach (sirf useEffect) best hai.
