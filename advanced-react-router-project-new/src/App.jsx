@@ -5,7 +5,16 @@ import {
   RouterProvider,
   Route,
 } from "react-router";
-import { About, Contact, Home, Layout, Products } from "../public/index.js";
+import {
+  About,
+  Contact,
+  Home,
+  Layout,
+  Products,
+  ContactLayout,
+  ContactInfo,
+  ContactForm,
+} from "../public/index.js";
 
 function App() {
   const router = createBrowserRouter(
@@ -14,7 +23,10 @@ function App() {
         <Route index element={<Home />} />
         <Route path="about" element={<About />} />
         <Route path="products" element={<Products />} />
-        <Route path="contact" element={<Contact />} />
+        <Route path="contact" element={<ContactLayout />}>
+          <Route path="info" element={<ContactInfo />} />
+          <Route path="form" element={<ContactForm />} />
+        </Route>
       </Route>
     )
   );

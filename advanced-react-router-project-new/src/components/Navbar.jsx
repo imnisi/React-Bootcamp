@@ -1,8 +1,10 @@
 import React from "react";
 import logo from "../assets/logo.png";
-import { NavLink } from "react-router";
+import { NavLink, useNavigate } from "react-router";
 
 function Navbar() {
+  const navigate = useNavigate();
+
   return (
     <div className="w-full bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 py-8 px-8">
       <div className="max-w-7xl mx-auto flex items-center justify-between gap-8">
@@ -76,7 +78,11 @@ function Navbar() {
 
         {/* Separate Button with Gradient */}
         <button
-          className="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white font-bold text-base rounded-full shadow-2xl hover:shadow-pink-500/50 hover:scale-105 hover:from-indigo-700 hover:via-purple-700 hover:to-pink-700 transition duration-300 whitespace-nowrap flex items-center justify-center"
+          onClick={() => {
+            // replace: true: it will not keep the history of the current page in the browser history stack.
+            navigate("/about", { replace: true });
+          }}
+          className="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white font-bold text-base rounded-full shadow-2xl hover:shadow-pink-500/50 hover:scale-105 hover:from-indigo-700 hover:via-purple-700 hover:to-pink-700 transition duration-300 whitespace-nowrap flex items-center justify-center cursor-pointer"
           style={{ height: "33px", width: "135px" }}
         >
           Get Started
