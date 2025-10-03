@@ -1,0 +1,46 @@
+{
+  "jobs": [
+    {
+      "id": 1,
+      "title": "Software Engineer",
+      "salary": "$80,000 - $120,000",
+      "location": "Remote",
+      "description": "Develop and maintain web applications."
+    },
+    {
+      "id": 2,
+      "title": "Product Manager",
+      "salary": "$90,000 - $130,000",
+      "location": "New York, NY",
+      "description": "Lead product development and strategy."
+    },
+    {
+      "id": 3,
+      "title": "UX Designer",
+      "salary": "$70,000 - $110,000",
+      "location": "San Francisco, CA",
+      "description": "Design user-friendly interfaces and experiences."
+    },
+    {
+      "id": 4,
+      "title": "Data Scientist",
+      "salary": "$95,000 - $140,000",
+      "location": "Boston, MA",
+      "description": "Analyze and interpret complex data to help companies make decisions."
+    },
+    {
+      "id": 5,
+      "title": "DevOps Engineer",
+      "salary": "$85,000 - $125,000",
+      "location": "Austin, TX",
+      "description": "Manage and automate infrastructure and deployment processes."
+    },
+    {
+      "id": 6,
+      "title": "Marketing Specialist",
+      "salary": "$60,000 - $90,000",
+      "location": "Chicago, IL",
+      "description": "Develop and implement marketing strategies to promote products and services."
+    }
+  ]
+}

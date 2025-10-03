@@ -27,8 +27,8 @@ function Navbar() {
                 to="/"
                 className={({ isActive }) =>
                   isActive
-                    ? "!text-yellow-300 font-bold border-b-2 border-yellow-300"
-                    : "text-white hover:text-yellow-200 transition duration-200"
+                    ? "!text-orange-300 font-bold border-b-2 border-orange-300"
+                    : "text-white hover:text-orange-200 transition duration-200"
                 }
               >
                 Home
@@ -40,8 +40,8 @@ function Navbar() {
                 to="/products"
                 className={({ isActive }) =>
                   isActive
-                    ? "!text-yellow-300 font-bold border-b-2 border-yellow-300"
-                    : "text-white hover:text-yellow-200 transition duration-200"
+                    ? "!text-orange-300 font-bold border-b-2 border-orange-300"
+                    : "text-white hover:text-orange-200 transition duration-200"
                 }
               >
                 Products
@@ -53,8 +53,8 @@ function Navbar() {
                 to="/about"
                 className={({ isActive }) =>
                   isActive
-                    ? "!text-yellow-300 font-bold border-b-2 border-yellow-300"
-                    : "text-white hover:text-yellow-200 transition duration-200"
+                    ? "!text-orange-300 font-bold border-b-2 border-orange-300"
+                    : "text-white hover:text-orange-200 transition duration-200"
                 }
               >
                 About
@@ -71,6 +71,19 @@ function Navbar() {
                 }
               >
                 Contact
+              </NavLink>
+            </li>
+
+            <li className="flex items-center">
+              <NavLink
+                to="/jobs"
+                className={({ isActive }) =>
+                  isActive
+                    ? "!text-orange-300 font-bold border-b-2 border-orange-300"
+                    : "text-white hover:text-orange-200 transition duration-200"
+                }
+              >
+                Jobs
               </NavLink>
             </li>
           </ul>

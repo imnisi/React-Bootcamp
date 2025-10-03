@@ -7,15 +7,17 @@ import {
 } from "react-router";
 import {
   About,
-  Contact,
   Home,
   Layout,
   Products,
+  Jobs,
   ContactLayout,
   ContactInfo,
   ContactForm,
   NotFoundPage,
+  JobsLayout,
 } from "../public/index.js";
+import { jobsLoader } from "../public/jobsLoader.js";
 
 function App() {
   const router = createBrowserRouter(
@@ -29,6 +31,9 @@ function App() {
           <Route path="form" element={<ContactForm />} />
         </Route>
         <Route path="*" element={<NotFoundPage />} />
+        <Route path="jobs" element={<JobsLayout />}>
+          <Route index element={<Jobs />} loader={jobsLoader} />
+        </Route>
       </Route>
     )
   );
