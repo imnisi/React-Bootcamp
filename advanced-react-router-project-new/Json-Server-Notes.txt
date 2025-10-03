@@ -1,0 +1,171 @@
+# // data.json
+
+{
+  "jobs": [
+    {
+      "id": 1,
+      "title": "Software Engineer",
+      "salary": "$80,000 - $120,000",
+      "location": "Remote",
+      "description": "Develop and maintain web applications."
+    },
+    {
+      "id": 2,
+      "title": "Product Manager",
+      "salary": "$90,000 - $130,000",
+      "location": "New York, NY",
+      "description": "Lead product development and strategy."
+    },
+    {
+      "id": 3,
+      "title": "UX Designer",
+      "salary": "$70,000 - $110,000",
+      "location": "San Francisco, CA",
+      "description": "Design user-friendly interfaces and experiences."
+    },
+    {
+      "id": 4,
+      "title": "Data Scientist",
+      "salary": "$95,000 - $140,000",
+      "location": "Boston, MA",
+      "description": "Analyze and interpret complex data to help companies make decisions."
+    },
+    {
+      "id": 5,
+      "title": "DevOps Engineer",
+      "salary": "$85,000 - $125,000",
+      "location": "Austin, TX",
+      "description": "Manage and automate infrastructure and deployment processes."
+    }
+  ]
+}
+
+!E:\React-Bootcamp\advanced-react-router-project-new\src\assets>npx json-server --watch data.json --port 5000
+Need to install the following packages:
+json-server@1.0.0-beta.3
+Ok to proceed? (y) y
+--watch/-w can be omitted, JSON Server 1+ watches for file changes by default
+JSON Server started on PORT :5000
+Press CTRL-C to stop
+Watching data.json...
+(˶ᵔ ᵕ ᵔ˶)
+Index:
+http://localhost:5000/
+Static files:
+Serving ./public directory if it exists
+Endpoints:
+http://localhost:5000/jobs
+
+# I have created a mock data for Jobs, then I write the above command <npx json-server --watch data.json --port 5000> in the terminal , can u pls explain ?
+
+Bilkul! Main aapko simple Hinglish mein explain karta hoon:
+
+# Kya hai ye JSON Server?
+
+JSON Server ek tool hai jo aapke JSON file ko fake REST API mein convert kar deta hai. Basically, ye aapko ek temporary backend server provide karta hai bina actually backend code likhe.
+
+# Kya hua step-by-step:
+
+# 1. Data.json file banai
+```json
+{
+  "jobs": [...]
+}
+```
+Tumne ek JSON file mein job listings store ki.
+
+# 2. JSON Server chalaya
+```bash
+?npx json-server --watch data.json --port 5000
+```
+
+* Iska matlab:
+- `npx json-server` - JSON Server tool run karo
+- `--watch data.json` - Is file ko watch karo (agar file change hogi, server automatically update hoga)
+- `--port 5000` - Server port 5000 par chalo
+
+# 3. Kya mila tumhe?
+
+Ab tumhare paas ek working API hai:
+
+* Endpoint: `http://localhost:5000/jobs`
+
+Tum ab ye operations kar sakte ho:
+
+# GET - Sab jobs fetch karo
+```javascript
+fetch('http://localhost:5000/jobs')
+  .then(res => res.json())
+  .then(data => console.log(data))
+```
+
+# GET by ID - Ek specific job fetch karo
+```javascript
+fetch('http://localhost:5000/jobs/1')  // ID 1 wali job
+```
+
+# POST - Naya job add karo
+```javascript
+fetch('http://localhost:5000/jobs', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    title: "Frontend Developer",
+    salary: "$70,000",
+    location: "Remote"
+  })
+})
+```
+
+# PUT - Job update karo
+```javascript
+fetch('http://localhost:5000/jobs/1', {
+  method: 'PUT',
+  body: JSON.stringify({ title: "Senior Software Engineer" })
+})
+```
+
+# DELETE - Job delete karo
+```javascript
+fetch('http://localhost:5000/jobs/1', {
+  method: 'DELETE'
+})
+```
+
+# Kyun useful hai?
+
+✅ Backend ki zarurat nahi - Bina Node.js/Express backend banaye testing kar sakte ho  
+✅ Fast development - Quickly API testing kar sakte ho  
+✅ Real API jaisa - Real backend ke saath kaam karne jaisa feel aata hai  
+✅ Learning ke liye perfect - React mein API integration seekhne ke liye best  
+
+* Real use case:
+
+# Suppose tum apne React app mein job listings show karna chahte ho:
+
+```javascript
+import { useEffect, useState } from 'react';
+
+function JobList() {
+  const [jobs, setJobs] = useState([]);
+
+  useEffect(() => {
+    fetch('http://localhost:5000/jobs')
+      .then(res => res.json())
+      .then(data => setJobs(data));
+  }, []);
+
+  return (
+    <div>
+      {jobs.map(job => (
+        <div key={job.id}>
+          <h2>{job.title}</h2>
+          <p>{job.location}</p>
+        </div>
+      ))}
+    </div>
+  );
+}
+```
+
+# Simple words mein:JSON Server tumhari JSON file ko ek chhota sa backend server bana deta hai jisse tum API calls practice kar sakte ho!
