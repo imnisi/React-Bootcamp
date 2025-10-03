@@ -7,6 +7,7 @@ import Navbar from "../src/components/Navbar";
 import ContactLayout from "../src/Layout/ContactLayout";
 import ContactInfo from "../src/components/ContactInfo";
 import ContactForm from "../src/components/ContactForm";
+import NotFoundPage from "../src/components/NotFoundPage";
 
 export {
   About,
@@ -18,4 +19,5 @@ export {
   ContactLayout,
   ContactInfo,
   ContactForm,
+  NotFoundPage,
 };

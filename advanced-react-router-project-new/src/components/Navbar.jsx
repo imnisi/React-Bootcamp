@@ -80,7 +80,7 @@ function Navbar() {
         <button
           onClick={() => {
             // replace: true: it will not keep the history of the current page in the browser history stack.
-            navigate("/about", { replace: true });
+            navigate("/", { replace: true });
           }}
           className="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white font-bold text-base rounded-full shadow-2xl hover:shadow-pink-500/50 hover:scale-105 hover:from-indigo-700 hover:via-purple-700 hover:to-pink-700 transition duration-300 whitespace-nowrap flex items-center justify-center cursor-pointer"
           style={{ height: "33px", width: "135px" }}

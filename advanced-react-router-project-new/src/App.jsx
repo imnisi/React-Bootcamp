@@ -14,6 +14,7 @@ import {
   ContactLayout,
   ContactInfo,
   ContactForm,
+  NotFoundPage,
 } from "../public/index.js";
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
           <Route path="info" element={<ContactInfo />} />
           <Route path="form" element={<ContactForm />} />
         </Route>
+        <Route path="*" element={<NotFoundPage />} />
       </Route>
     )
   );
