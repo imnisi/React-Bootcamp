@@ -10,6 +10,7 @@ import ContactInfo from "../src/components/ContactInfo";
 import ContactForm from "../src/components/ContactForm";
 import NotFoundPage from "../src/components/NotFoundPage";
 import JobsLayout from "../src/Layout/JobsLayout";
+import JobDetails from "../src/components/JobDetails";
 
 export {
   About,
@@ -24,4 +25,5 @@ export {
   NotFoundPage,
   JobsLayout,
   Jobs,
+  JobDetails,
 };

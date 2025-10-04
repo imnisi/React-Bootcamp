@@ -5,42 +5,48 @@
       "title": "Software Engineer",
       "salary": "$80,000 - $120,000",
       "location": "Remote",
-      "description": "Develop and maintain web applications."
+      "description": "Develop and maintain web applications.",
+      "jobDetails": "We are looking for a skilled Software Engineer to join our dynamic team. The ideal candidate will have experience in full-stack development, proficiency in JavaScript, and a strong understanding of modern web technologies. Responsibilities include designing, coding, and testing software applications, collaborating with cross-functional teams, and ensuring the performance and scalability of our systems. If you are passionate about technology and eager to work in a fast-paced environment, we would love to hear from you."
     },
     {
       "id": 2,
       "title": "Product Manager",
       "salary": "$90,000 - $130,000",
       "location": "New York, NY",
-      "description": "Lead product development and strategy."
+      "description": "Lead product development and strategy.",
+      "jobDetails": "We are seeking an experienced Product Manager to drive the development and execution of our product strategy. The successful candidate will be responsible for defining product vision, gathering and prioritizing customer requirements, and working closely with engineering, marketing, and sales teams to deliver high-quality products. Strong leadership skills, excellent communication abilities, and a deep understanding of market trends are essential for this role. If you are a strategic thinker with a passion for innovation, we encourage you to apply."
     },
     {
       "id": 3,
       "title": "UX Designer",
       "salary": "$70,000 - $110,000",
       "location": "San Francisco, CA",
-      "description": "Design user-friendly interfaces and experiences."
+      "description": "Design user-friendly interfaces and experiences.",
+      "jobDetails": "We are looking for a talented UX Designer to create intuitive and engaging user experiences for our digital products. The ideal candidate will have a strong portfolio showcasing their design skills, proficiency in design tools such as Sketch or Figma, and a deep understanding of user-centered design principles. Responsibilities include conducting user research, creating wire frames and prototypes, and collaborating with developers to implement designs. If you are passionate about creating exceptional user experiences and have a keen eye for detail, we would love to hear from you."
     },
     {
       "id": 4,
       "title": "Data Scientist",
       "salary": "$95,000 - $140,000",
       "location": "Boston, MA",
-      "description": "Analyze and interpret complex data to help companies make decisions."
+      "description": "Analyze and interpret complex data to help companies make decisions.",
+      "jobDetails": "We are seeking a skilled Data Scientist to join our analytics team. The successful candidate will be responsible for collecting, analyzing, and interpreting large datasets to provide actionable insights that drive business decisions. Proficiency in statistical analysis, machine learning, and data visualization tools such as Python, R, and Tableau is essential. Strong problem-solving skills and the ability to communicate complex findings to non-technical stakeholders are also important. If you are passionate about data and eager to make a significant impact, we encourage you to apply."
     },
     {
       "id": 5,
       "title": "DevOps Engineer",
       "salary": "$85,000 - $125,000",
       "location": "Austin, TX",
-      "description": "Manage and automate infrastructure and deployment processes."
+      "description": "Manage and automate infrastructure and deployment processes.",
+      "jobDetails": "We are looking for a skilled DevOps Engineer to join our IT team. The ideal candidate will have experience in automating and optimizing mission-critical deployments, ensuring high availability and scalability of our infrastructure. Proficiency in cloud platforms such as AWS or Azure, containerization technologies like Docker and Kubernetes, and configuration management tools such as Ansible or Terraform is essential. Strong collaboration skills and the ability to work closely with development and operations teams are also important. If you are passionate about infrastructure automation and eager to work in a dynamic environment, we would love to hear from you."
     },
     {
       "id": 6,
       "title": "Marketing Specialist",
       "salary": "$60,000 - $90,000",
       "location": "Chicago, IL",
-      "description": "Develop and implement marketing strategies to promote products and services."
+      "description": "Develop and implement marketing strategies to promote products and services.",
+      "jobDetails": "We are seeking a creative Marketing Specialist to join our marketing team. The successful candidate will be responsible for developing and executing marketing campaigns, conducting market research, and analyzing campaign performance to optimize results. Proficiency in digital marketing tools such as Google Analytics, SEO, and social media platforms is essential. Strong communication skills and the ability to work collaboratively with cross-functional teams are also important. If you are passionate about marketing and eager to contribute to our company's growth, we encourage you to apply."
     }
   ]
 }

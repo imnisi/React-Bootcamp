@@ -16,6 +16,7 @@ import {
   ContactForm,
   NotFoundPage,
   JobsLayout,
+  JobDetails,
 } from "../public/index.js";
 import { jobsLoader } from "../public/jobsLoader.js";
 
@@ -33,6 +34,11 @@ function App() {
         <Route path="*" element={<NotFoundPage />} />
         <Route path="jobs" element={<JobsLayout />}>
           <Route index element={<Jobs />} loader={jobsLoader} />
+          <Route
+            path="jobDetails/:jobId"
+            element={<JobDetails />}
+            loader={jobsLoader}
+          />
         </Route>
       </Route>
     )

@@ -1,8 +1,9 @@
 import React from "react";
-import { useLoaderData } from "react-router";
+import { useLoaderData, useNavigate } from "react-router";
 
 function Jobs() {
   const jobs = useLoaderData();
+  const navigate = useNavigate();
 
   return (
     <div
@@ -52,7 +53,12 @@ function Jobs() {
               </p>
 
               {/* Apply Button */}
-              <button className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold !py-3 rounded-full shadow-md hover:shadow-xl hover:from-indigo-700 hover:to-purple-700 transition duration-300 cursor-pointer">
+              <button
+                className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold !py-3 rounded-full shadow-md hover:shadow-xl hover:from-indigo-700 hover:to-purple-700 transition duration-300 cursor-pointer"
+                onClick={() => {
+                  navigate(`jobDetails/${job.id}`);
+                }}
+              >
                 Apply Now
               </button>
             </div>
