@@ -17,6 +17,7 @@ import {
   NotFoundPage,
   JobsLayout,
   JobDetails,
+  JobAPIError,
 } from "../public/index.js";
 import { jobsLoader } from "../public/jobsLoader.js";
 
@@ -32,7 +33,11 @@ function App() {
           <Route path="form" element={<ContactForm />} />
         </Route>
         <Route path="*" element={<NotFoundPage />} />
-        <Route path="jobs" element={<JobsLayout />}>
+        <Route
+          path="jobs"
+          element={<JobsLayout />}
+          errorElement={<JobAPIError />}
+        >
           <Route index element={<Jobs />} loader={jobsLoader} />
           <Route
             path="jobDetails/:jobId"

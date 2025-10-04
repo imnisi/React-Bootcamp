@@ -11,6 +11,8 @@ import ContactForm from "../src/components/ContactForm";
 import NotFoundPage from "../src/components/NotFoundPage";
 import JobsLayout from "../src/Layout/JobsLayout";
 import JobDetails from "../src/components/JobDetails";
+import JobNotFoundError from "../src/components/JobNotFoundError";
+import JobAPIError from "../src/components/JobAPIError";
 
 export {
   About,
@@ -26,4 +28,6 @@ export {
   JobsLayout,
   Jobs,
   JobDetails,
+  JobNotFoundError,
+  JobAPIError,
 };

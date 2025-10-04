@@ -1,31 +1,19 @@
 import React from "react";
 import { useParams, useLoaderData, useNavigate } from "react-router";
+import JobNotFoundError from "./JobNotFoundError";
 
 function JobDetails() {
-  const { jobId } = useParams();
-  const jobs = useLoaderData();
-  const navigate = useNavigate();
+  const { jobId } = useParams(); // allows us to access the jobId parameter from the URL
+  const jobs = useLoaderData(); // Fetch the jobs data using the loader
+  const navigate = useNavigate(); // Hook to programmatically navigate
 
   // Find the job that matches the jobId
   const job = jobs.find((job) => job.id === Number(jobId));
+  console.log(job);
 
   // If job not found
   if (!job) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50">
-        <div className="text-center">
-          <h2 className="text-3xl font-bold text-gray-800 !mb-4">
-            Job Not Found!
-          </h2>
-          <button
-            onClick={() => navigate("/jobs")}
-            className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white !px-6 !py-3 rounded-full font-semibold hover:scale-105 transition cursor-pointer"
-          >
-            Back to Jobs
-          </button>
-        </div>
-      </div>
-    );
+    return <JobNotFoundError />;
   }
 
   return (
