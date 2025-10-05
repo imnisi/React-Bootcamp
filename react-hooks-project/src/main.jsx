@@ -5,12 +5,16 @@ import App from "./App.jsx";
 import UseStateHook from "./Hooks/UseStateHook.jsx";
 import UseStateHookNew from "./Hooks/UseStateHookNew.jsx";
 import UseEffectHook from "./Hooks/UseEffectHook.jsx";
+import UseRefHook from "./Hooks/UseRefHook.jsx";
+import UseRefHookNew from "./Hooks/UseRefHookNew.jsx";
 
 createRoot(document.getElementById("root")).render(
   <>
-    {/* <App />
+    <App />
     <UseStateHook />
-    <UseStateHookNew /> */}
+    <UseStateHookNew />
     <UseEffectHook />
+    <UseRefHook />
+    <UseRefHookNew />
   </>
 );
