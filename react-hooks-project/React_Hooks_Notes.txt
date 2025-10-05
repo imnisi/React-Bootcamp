@@ -1,3 +1,9 @@
+# -----------------------------useState Hook-----------------------------
+
+* useState Hook is a special function that takes the initial state as an argument and returns an array of two entries. The first entry is the current state, and the second is a function that updates the state.
+
+Syntax: const [state, setState] = useState(initialState);
+
 ? const [car, setCar] = useState({
 ?    brand: "Ferrari",
 ?    model: "Roma",
@@ -105,4 +111,74 @@ Tumhare case me:
 ?  Change Color
 ? </button>
 ```
+
+# -----------------------------useEffect Hook-----------------------------
+
+* useEffect Hook is used to perform side effects in functional components. It takes two arguments: a function that contains the side-effect logic, and an optional array of dependencies that determine when the effect should re-run.
+
+* Side effects can include data fetching, subscriptions, or manually changing the DOM.
+
+* If the dependency array is empty, the effect will only run once after the initial render.
+
+Syntax: useEffect(() => {
+  Side-effect logic here
+}, [dependencies]); 
+
+
+# When we use useEffect() hook without any dependency, then it will execute the callback function, whenever any state change in the component, and also after the initial render.
+
+?  useEffect(() => {
+?    setTimeout(() => {
+?      setCount((prev) => prev + 1);
+?    }, 5000);
+?  });
+
+# When we use useEffect() hook with an empty dependency array, then it will execute the callback function only once after the initial render.
+
+?  useEffect(() => {
+?    setTimeout(() => {
+?      setCount((prev) => prev + 1);
+?    }, 5000);
+?  }, []);
+
+# When we use useEffect() hook with a dependency array having some state variables, then it will execute the callback function only when any of the state variable in the dependency array changes.
+
+?  useEffect(() => {
+?    setTimeout(() => {
+?      setCount((prev) => prev + 1);
+?    }, 5000);
+?  }, [count]);
+
+# Example:
+
+? import { useState, useEffect } from "react";
+? const [count, setCount] = useState(0);
+? useEffect(() => {
+?    setTimeout(() => {
+?      setCount((prev) => prev + 1);
+?    }, 5000);
+?  }, []);
+? return (
+?   <>
+?     <h1>Count: {count}</h1>
+?   </>
+? );
+# Explanation:
+
+* In this example, we have a state variable `count` initialized to 0.
+
+* We use the `useEffect` hook with an empty dependency array, so the effect runs only once after the initial render.
+* Inside the effect, we set a timeout to increment the `count` state by 1 after 5 seconds.
+
+* As a result, the count will update to 1 after 5 seconds, and the component will re-render to display the updated count.
+
+* If we had used `useEffect` without an empty dependency array, the effect would run after every render, causing the count to increment continuously every 5 seconds.
+
+* If we had used `useEffect` with `[count]` as the dependency array, the effect would run only when the `count` state changes, which would also lead to continuous increments every 5 seconds after the initial render.
+
+# StrictMode causes useEffect to run twice in development mode  duw to which the first start counting from 0 to 2 instead of 1.
+? <StrictMode>
+?    <UseEffectHook />
+? </StrictMode>
+
 
