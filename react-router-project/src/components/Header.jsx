@@ -20,20 +20,24 @@ function Header() {
             <li key={item}>
               <NavLink
                 to={item === "Home" ? "/" : `/${item.toLowerCase()}`}
-                className={({ isActive }) =>
-                  `relative transition-colors duration-300 hover:text-orange-700 ${
+                className={({ isActive }) => {
+                  return `relative transition-colors duration-300 hover:text-orange-700 ${
                     isActive ? "text-orange-700 font-semibold" : ""
-                  }`
-                }
+                  }`;
+                }}
               >
-                {item}
-                <span
-                  className={({ isActive }) =>
-                    `absolute bottom-0 left-0 w-full h-0.5 bg-orange-700 transition-all duration-300 ${
-                      isActive ? "opacity-100 scale-x-100" : "opacity-0 scale-x-0"
-                    }`
-                  }
-                />
+                {({ isActive }) => (
+                  <>
+                    {item}
+                    <span
+                      className={`absolute bottom-0 left-0 w-full h-0.5 bg-orange-700 transition-all duration-300 ${
+                        isActive
+                          ? "opacity-100 scale-x-100"
+                          : "opacity-0 scale-x-0"
+                      }`}
+                    />
+                  </>
+                )}
               </NavLink>
             </li>
           ))}

@@ -1,0 +1,116 @@
+        <ul className="hidden lg:flex items-center gap-8 font-medium text-gray-700">
+          {["Home", "About", "Contact", "Github"].map((item) => (
+            <li key={item}>
+              <NavLink
+                to={item === "Home" ? "/" : `/${item.toLowerCase()}`}
+                className={({ isActive }) =>
+                  `relative transition-colors duration-300 hover:text-orange-700 ${
+                    isActive ? "text-orange-700 font-semibold" : ""
+                  }`
+                }
+              >
+                {item}
+                <span
+                  className={({ isActive }) =>
+                    `absolute bottom-0 left-0 w-full h-0.5 bg-orange-700 transition-all duration-300 ${
+                      isActive ? "opacity-100 scale-x-100" : "opacity-0 scale-x-0"
+                    }`
+                  }
+                />
+              </NavLink>
+            </li>
+          ))}
+        </ul>
+
+* Why have you written two time isActive here?, pls explain in Hinglish.
+
+
+# Pehle samjho — `NavLink` kya karta hai
+
+ React Router ka `NavLink` component ek special link hota hai jo batata hai ki yeh link currently active hai ya nahi(matlab, user jis page pe hai).
+
+Jab `NavLink` active hota hai, React Router automatically ek prop pass karta hai —
+? `{ isActive: true }` agar current page match karta hai
+? `{ isActive: false }` agar nahi karta
+
+# 1st `isActive` — for the Main link text
+
+```jsx
+? className={({ isActive }) =>
+?  `relative transition-colors duration-300 hover:text-orange-700 ${
+?    isActive ? "text-orange-700 font-semibold" : ""
+?  }`
+? }
+```
+
+# Yahaan pe hum use kar rahe hain taaki active link ka text color aur font weight change ho jaaye.
+
+ Agar link active hai → `text-orange-700 font-semibold`
+ Agar nahi hai → normal gray color rahega
+
+# 2nd `isActive` — for the underline animation
+
+```jsx
+? <span
+?  className={({ isActive }) =>
+?   `absolute bottom-0 left-0 w-full h-0.5 bg-orange-700 transition-all duration-300 ${
+?      isActive ? "opacity-100 scale-x-100" : "opacity-0 scale-x-0"
+?    }`
+?  }
+? />
+```
+
+# Yahaan pe `isActive` se hum decide kar rahe hain underline (bottom line) dikhani hai ya chhupani.
+
+ Agar link active hai → line dikhegi (opacity 100%)
+ Agar nahi hai → line chhupi rahegi (opacity 0)
+
+---
+
+# Lekin ek chhoti galti bhi hai
+
+! React Router ka `NavLink` sirf ek hi baar `{ isActive }` prop deta hai — direct `NavLink` component ko.
+! Wo `span` ke andar automatically pass nahi hota.
+! Matlab ye likha code:
+
+```jsx
+? <span className={({ isActive }) => ... } />
+```
+
+actually work nahi karega — kyunki `span` ko `isActive` milta hi nahi.
+
+# Correct way
+
+Tumhe `isActive` ko upar `NavLink` ke render function ke andar use karna hoga, aur uske basis par `span` ko class deni hogi — like this:
+
+```jsx
+? <NavLink
+? to={item === "Home" ? "/" : `/${item.toLowerCase()}`}
+?  className={({ isActive }) => {
+?    return `relative transition-colors duration-300 hover:text-orange-700 ${
+?      isActive ? "text-orange-700 font-semibold" : ""
+?    }`;
+?  }}
+? >
+?  {({ isActive }) => (
+?    <>
+?      {item}
+?      <span
+?        className={`absolute bottom-0 left-0 w-full h-0.5 bg-orange-700 transition-all duration-300 ${
+?          isActive ? "opacity-100 scale-x-100" : "opacity-0 scale-x-0"
+?        }`}
+?      />
+?    </>
+?  )}
+? </NavLink>
+```
+
+# Yahaan humne `isActive` ek hi jagah se liya (`NavLink` ke andar), aur dono ke liye use kar liya — text aur underline dono ke liye.
+
+# (Summary in short)
+
+| Case            | `isActive` use                             | Purpose                        |
+| --------------- | ------------------------------------------ | ------------------------------ |
+| 1st             | Text className mein                        | Text color & font style change |
+| 2nd             | Span underline mein                        | Underline dikhana/chhupana     |
+| Best Practice   | Ek hi `isActive` lo aur dono mein use karo | Clean aur correct code         |
