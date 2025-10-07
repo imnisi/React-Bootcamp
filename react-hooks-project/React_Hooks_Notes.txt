@@ -180,6 +180,7 @@ Syntax: useEffect(() => {
 * If we had used `useEffect` with `[count]` as the dependency array, the effect would run only when the `count` state changes, which would also lead to continuous increments every 5 seconds after the initial render.
 
 # StrictMode causes useEffect to run twice in development mode due to which the first start counting from 0 to 2 instead of 1.
+
 ? <StrictMode>
 ?    <UseEffectHook />
 ? </StrictMode>
@@ -209,7 +210,123 @@ Syntax: useEffect(() => {
 
 ! In short: Chahe hum state update kare ya na kare, useEffect hook har baar chalta hai jab bhi component re-render hota hai chahe ye rendering kisi aur wajah se ho.
 
+# When an infinite loop occurs due to useEffect, and when not occur? How to avoid an infinite loop in using useEffect?
+
+ An infinite loop occurs in useEffect when the effect updates a state that is also listed in its dependency array, causing the effect to run again and again.
+
+# Pehle samjho: `useEffect` kab run hota hai?
+
+`useEffect(() => { ... }, [dependencies])`
+
+* 1st argument: Ek callback function hota hai — yahan likha code tab chalega jab React component render hota hai.
+* 2nd argument (dependencies array): decide karta hai kab dobara run hona hai.
+
+# Infinite loop kab hota hai?
+
+Infinite loop tab hota hai jab:
+
+1. Tum `useEffect` ke andar state update karte ho (`setState`)
+2. Aur wo state dependency array mein likhi hoti hai
+
+# Example:
+
+```jsx
+? useEffect(() => {
+?  setCount(count + 1);
+? }, [count]);
+```
+
+# Yahaan kya ho raha hai:
+
+* Component render hua → effect chala → `setCount` ne state badli
+* State badli → component re-render → effect phir se chala
+* Effect ne phir se state badli → again re-render → again effect
+
+! Result = Infinite loop
+
+---
+
+# Jab Infinite loop nahi hota
+
+*1. Jab dependency array empty hai:
+
+   ```jsx
+?   useEffect(() => {
+?     console.log("Runs only once");
+?   }, []);  // Ye sirf component mount par ek hi baar chalega.
+```
+
+ 
+
+* 2. Jab dependency array mein wo value nahi likhi hoti jise effect ke andar update kiya ja raha hai:
+
+   ```jsx
+?   useEffect(() => {
+?     setData(fetchData());
+?   }, []); // data yahan dependency mein nahi hai
+   ```
+Ye sirf ek hi baar chalega, infinite loop nahi hoga.
+
+* 3. Jab state update **condition ke sath** hoti hai:
+
+   ```jsx
+?   useEffect(() => {
+?     if (count < 5) {
+?       setCount(count + 1);
+?     }
+?   }, [count]);
+   ```
+ Ye sirf 5 tak chalega, infinite nahi.
+
+
+# Infinite loop ko avoid karne ke tarike
+
+* 1. Sahi dependencies likho
+   → Sirf wahi values likho jo truly necessary hain.
+
+* 2. Conditional updates karo
+
+   ```jsx
+?   useEffect(() => {
+?     if (!dataLoaded) {
+?       fetchData();
+?       setDataLoaded(true);
+?     }
+?   }, [dataLoaded]);
+   ```
+
+* 3. Functional update use karo
+   Jab tumhe purani state ki value chahiye:
+
+```jsx
+?   useEffect(() => {
+?     setCount(prev => prev + 1);
+?   }, []); // Dependency array [] ka matlab hai: ye useEffect sirf ek baar chalega (jab component mount hota hai).
+   ```
+
+* 4. Data fetching ke liye dependency hatao
+   Kyunki API call sirf mount ke time par hi chahiye hoti hai:
+
+   ```jsx
+?   useEffect(() => {
+?     fetchData();
+?   }, []); // Empty array means: run only once
+   ```
+
+---
+
+# Summary Table:
+
+| Situation                                        | Loop hota hai? | Explanation                 |
+| ------------------------------------------------ | -------------- | --------------------------- |
+| `setState` inside useEffect & that state in deps |   Yes          | Keeps triggering re-renders |
+| Empty dependency `[]`                            |   No           | Runs only once              |
+| Conditional state update                         |   Maybe        | Runs till condition false   |
+| State update not in deps                         |   No           | No dependency change        |
+
+
 # So, to avoid this infinite loop, we can use useRef hook, jo ki component ke re-render hone par apne value ko maintain krta hai bina component ko re-render kiye.
+
 
 # -----------------------------useRef Hook-----------------------------
 
