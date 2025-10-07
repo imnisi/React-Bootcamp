@@ -75,6 +75,7 @@ Syntax: const [state, setState] = useState(initialState);
 ?  Change Color
 ? </button>
 ```
+console.log(...prevCar) // {brand: "Ferrari", model: "Roma", year: "2023", color: "Red"}
 
 # Hinglish Explanation:
 
@@ -201,14 +202,54 @@ Syntax: useEffect(() => {
 # useEffect() ko kaise pata chl rha hai ki component re-render hua hai?
  Kyuki useEffect hook har render ke baad chalta hai. Jab bhi component re-render hota hai, useEffect ka callback function execute hota hai. Isliye, jab bhi hum state update karte hain aur component re-render hota hai, useEffect ka callback function fir se chalta hai.
 
-# Kya useEffect() hook har baar chlta hai jab bhi component re-render hota hai, chahe hum state update kare ya na kare?
- Yes, useEffect hook runs after every render of the component, regardless of whether the state has changed or not. It is executed after the component has been rendered to the DOM.
+# Component me kisi wajh se bhi component render hota ya re-render hai to useEffect chalta hai ya nahi
 
-# Aur ye tab bhi chlta hai Jab hum state update na kare, mtlb agr hum useEffect ke andar sirf console.log() kr rhe ho to kya fir bhi ye chlta hai? 
 
- Yes, useEffect will still run after every render, even if there are no state updates. It is designed to handle side effects in functional components, and it runs after the component has been rendered to the DOM. So, if you have a console.log() statement inside useEffect, it will execute every time the component re-renders, regardless of whether any state has changed or not.
+* useEffect chalega ya nahi - ye depend karta hai dependency array par:
 
-! In short: Chahe hum state update kare ya na kare, useEffect hook har baar chalta hai jab bhi component re-render hota hai chahe ye rendering kisi aur wajah se ho.
+# 3 Cases hain:
+
+# 1.Dependency array nahi diya (empty bhi nahi)
+```javascript
+? useEffect(() => {
+?  console.log("Har re-render pe chalega!");
+? });
+```
+✅ Har render/re-render pe chalega - kisi bhi wajah se component render ho
+
+# 2. Empty dependency array `[]`
+```javascript
+? useEffect(() => {
+?   console.log("Sirf pehli baar chalega!");
+? }, []);
+```
+✅ Sirf pehli baar chalega (component mount hone pe) - re-render pe NAHI chalega
+
+# 3. Dependencies diye hain
+```javascript
+? useEffect(() => {
+?  console.log("Count change hua!");
+? }, [count]);
+```
+✅ Tabhi chalega jab `count` change hoga - baaki re-renders pe nahi chalega
+
+# Example:
+
+```javascript
+? function MyComponent() {
+?  const [count, setCount] = useState(0);
+?  const [name, setName] = useState("Raj");
+
+?  useEffect(() => {
+?    console.log("Count badla:", count);
+?  }, [count]); // Sirf count change pe chalega
+
+ Agar name change karo to ye useEffect NAHI chalega
+ Kyunki dependency array me sirf count hai
+}
+```
+
+* useEffect automatically nahi chalta har re-render pe - dependency array decide karta hai kab chalega!
 
 # When an infinite loop occurs due to useEffect, and when not occur? How to avoid an infinite loop in using useEffect?
 
