@@ -201,7 +201,7 @@ If later we find we’re passing the generator to a memoized child and see unnec
 
 If you now use passwordGenerator inside useEffect, the effect’s dependency array must include it, because from React’s point of view, the effect depends on the current version of that function.
 
-#Why?
+# Why?
 - Because if length, isNumAllowed, or isSpecialAllowed change:
 - passwordGenerator will be re-created (new function identity)
 - useEffect will re-run, since the function in dependencies changed

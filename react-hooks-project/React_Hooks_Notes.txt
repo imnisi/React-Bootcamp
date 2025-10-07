@@ -35,8 +35,6 @@ Syntax: const [state, setState] = useState(initialState);
 * On clicking on blue button ,it is not working, can you explain me in hinglish
 
 
-
-
 # Tumhara current code:
 
 ```jsx
@@ -127,6 +125,10 @@ Syntax: useEffect(() => {
 
 # When we use useEffect() hook without any dependency, then it will execute the callback function, whenever any state change in the component, and also after the initial render.
 
+* To kya ye entire component ko fir bhi re-render krega agr callback function ke andar ka code state change na kr raha ho? I mean, agr hum callback function ke andar sirf console.log() kr rhe ho, to kya fir bhi component re-render hoga? 
+
+! Nahi, agar callback function ke andar koi state change nahi ho raha hai, to component re-render nahi hoga. useEffect hook sirf side effects ko handle karta hai, aur agar uske andar koi state update nahi ho raha hai, to component re-render nahi hota.
+
 ?  useEffect(() => {
 ?    setTimeout(() => {
 ?      setCount((prev) => prev + 1);
@@ -163,6 +165,7 @@ Syntax: useEffect(() => {
 ?     <h1>Count: {count}</h1>
 ?   </>
 ? );
+
 # Explanation:
 
 * In this example, we have a state variable `count` initialized to 0.
@@ -180,6 +183,33 @@ Syntax: useEffect(() => {
 ? <StrictMode>
 ?    <UseEffectHook />
 ? </StrictMode>
+
+? const [value, setValue] = useState(0);
+? const [count, setCount] = useState(0);
+
+? useEffect(() => {
+?    setCount((prevCount) => prevCount + 1);
+? });
+
+! So, the above code will cause infinite loop because every time the component re-renders, the useEffect will run   and update the state, causing another re-render. This cycle continues indefinitely.
+
+! Because at first when useState() is called, it initializes count to 0. Then, when the component renders for the first time, useEffect runs and updates count to 1. This causes the component to re-render, and useEffect runs again, updating count to 2. This cycle continues indefinitely, causing an infinite loop of re-renders.
+ 
+* So, to avoid this infinite loop, we can use useRef hook, jo ki component ke re-render hone par apne value ko maintain krta hai bina component ko re-render kiye.
+
+# useEffect() ko kaise pata chl rha hai ki component re-render hua hai?
+ Kyuki useEffect hook har render ke baad chalta hai. Jab bhi component re-render hota hai, useEffect ka callback function execute hota hai. Isliye, jab bhi hum state update karte hain aur component re-render hota hai, useEffect ka callback function fir se chalta hai.
+
+# Kya useEffect() hook har baar chlta hai jab bhi component re-render hota hai, chahe hum state update kare ya na kare?
+ Yes, useEffect hook runs after every render of the component, regardless of whether the state has changed or not. It is executed after the component has been rendered to the DOM.
+
+# Aur ye tab bhi chlta hai Jab hum state update na kare, mtlb agr hum useEffect ke andar sirf console.log() kr rhe ho to kya fir bhi ye chlta hai? 
+
+ Yes, useEffect will still run after every render, even if there are no state updates. It is designed to handle side effects in functional components, and it runs after the component has been rendered to the DOM. So, if you have a console.log() statement inside useEffect, it will execute every time the component re-renders, regardless of whether any state has changed or not.
+
+! In short: Chahe hum state update kare ya na kare, useEffect hook har baar chalta hai jab bhi component re-render hota hai chahe ye rendering kisi aur wajah se ho.
+
+# So, to avoid this infinite loop, we can use useRef hook, jo ki component ke re-render hone par apne value ko maintain krta hai bina component ko re-render kiye.
 
 # -----------------------------useRef Hook-----------------------------
 
@@ -204,6 +234,9 @@ Iske alawa, useRef ka use hum kisi bhi DOM element ko directly access krne ke li
 
 # Explanation:
 ? In this example, we create a reference using useRef and attach it to an input element. When the button is clicked, we use the reference to focus the input field directly.
+
+
+
 
 * Example 2: Storing mutable values
 

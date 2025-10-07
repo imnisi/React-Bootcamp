@@ -9,7 +9,8 @@ function UseRefHook() {
   //   });
 
   // So, the above code will cause infinite loop because every time the component re-renders, the useEffect will run and update the state, causing another re-render. This cycle continues indefinitely.
-  // Because useState itself re-renders the component when the state changes.
+
+  // Because at first when useState is called, it initializes count to 0. Then, when the component renders for the first time, useEffect runs and updates count to 1. This causes the component to re-render, and useEffect runs again, updating count to 2. This cycle continues indefinitely, causing an infinite loop of re-renders.
 
   // So, to avoid this infinite loop, we can use useRef hook, jo ki component ke re-render hone par apne value ko maintain krta hai bina component ko re-render kiye.
 
