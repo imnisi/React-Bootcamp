@@ -7,6 +7,7 @@ import UseStateHookNew from "./Hooks/UseStateHookNew.jsx";
 import UseEffectHook from "./Hooks/UseEffectHook.jsx";
 import UseRefHook from "./Hooks/UseRefHook.jsx";
 import UseRefHookNew from "./Hooks/UseRefHookNew.jsx";
+import UseMemoHook from "./Hooks/UseMemoHook.jsx";
 
 createRoot(document.getElementById("root")).render(
   <>
@@ -16,5 +17,6 @@ createRoot(document.getElementById("root")).render(
     <UseEffectHook />
     <UseRefHook />
     <UseRefHookNew />
+    <UseMemoHook />
   </>
 );

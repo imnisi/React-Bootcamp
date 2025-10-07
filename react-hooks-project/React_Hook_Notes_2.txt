@@ -1,0 +1,36 @@
+# -----------------------------useMemo Hook-----------------------------
+
+The React `useMemo` hook is a powerful tool for optimizing performance in functional components by memoizing the results of expensive calculations. That Means, caching a value so that it doesn't need to be recalculated on every render unless its dependencies change.
+
+This can improve the performance of the application by preventing unnecessary re-renders and calculations.
+
+# Syntax
+
+```javascript
+? const memoizedValue = useMemo(() => {
+?  Expensive calculation
+?  return computedValue;
+? }, [dependencies]);
+```
+
+# Parameters
+- `factory`: A function that returns the value you want to memoize. This function will be called only when one of the dependencies has changed.
+- `dependencies`: An array of dependencies that the memoized value depends on. If any of these dependencies change, the `factory` function will be called again to recalculate the value.
+
+# Example
+
+```javascript
+import React, { useState, useMemo } from 'react';
+? function ExpensiveComponent({ number }) {
+?  // Simulate an expensive calculation
+?  const computeFactorial = (n) => {
+?    console.log('Computing factorial...');
+?    if (n <= 1) return 1;
+?    return n * computeFactorial(n - 1);
+?  };
+
+?  // Use useMemo to memoize the result of the expensive calculation
+?  const factorial = useMemo(() => computeFactorial(number), [number]);
+
+?  return <div>Factorial of {number} is {factorial}</div>;
+? }
