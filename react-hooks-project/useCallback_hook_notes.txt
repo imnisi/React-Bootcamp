@@ -1,0 +1,243 @@
+
+# -----------------------------useCallback Hook-----------------------------
+
+The useCallback Hook is a react hook that returns a memoized version of the callback function that only changes if one of the dependencies has changed. It is useful when passing callbacks to optimized child components that rely on reference equality to prevent unnecessary renders.
+
+It means, when we use the useCallback Hook, it does not create a new function on every render, instead it returns the cached version of the function from the memory, until and unless the dependencies change.
+
+Let's understand this with the help of an example:
+
+
+# First version:
+
+* UseCallbackHook.jsx
+
+? import React, { useCallback, useState } from "react";
+? import Header from "../components/Header";
+
+? function UseCallbackHook() {
+?   const [count, setCount] = useState(0);
+
+?  return (
+?    <div>
+?      <h1>Let's learn useCallback Hook!</h1>
+?      <Header />
+?      <h2>Count: {count}</h2>
+?      <button onClick={() => setCount(count + 1)}>Increase Count</button>
+?    </div>
+?  );
+? }
+
+? export default UseCallbackHook;
+
+* Header.jsx
+
+? import React from "react";
+
+? function Header() {
+?  console.log("Header rendered!");
+
+?  return (
+?    <div>
+?      <h2>Header Component</h2>
+?    </div>
+?  );
+? }
+
+? export default Header;
+
+# In the first version, the number of  times I click on the count button , the header component is rendering that many times, why?
+
+Because whenever the parent component re-renders, all the child components also re-render by default.
+
+# Version 1: Basic Setup (Baar baar render ho raha hai)
+
+```
+? <Header />
+```
+
+* Kya ho raha hai:
+
+- Jab bhi aap count button click karte ho, `UseCallbackHook` component re-render hota hai
+- React ka default behavior: Jab parent re-render hota hai, to saare child components bhi re-render hote hain
+- Isliye `Header` bhi har baar render ho raha hai, chahe uske props change nahi ho rahe.
+
+! Console output: Har click pe "Header rendered!" print hoga
+
+# Second Version:
+
+* UseCallbackHook.jsx
+
+? function UseCallbackHook() {
+?  const [count, setCount] = useState(0); 
+?  return (
+?    <div>
+?      <h1>Let's learn useCallback Hook!</h1>
+?      <Header} />
+?      <h2>Count: {count}</h2>
+?      <button onClick={() => setCount(count + 1)}>Increase Count</button>
+?    </div>
+?  );
+? }
+
+* Header.jsx
+
+? function Header() {
+?  console.log("Header rendered!");
+?  return (
+?    <div>
+?      <h2>Header Component</h2>
+?    </div>
+?  );
+? }
+
+?export default React.memo(Header);
+
+# In the second version, the Header component is not rendering on clicking on the count button; it only renders once when the component renders for the first time, why?
+
+Because we have used `React.memo` to wrap the `Header` component.
+
+# Version 2: React.memo lagaya (Ab sirf ek baar render)
+
+```
+? export default React.memo(Header);
+```
+
+* Kya ho raha hai:
+- `React.memo` ek Higher Order Component (HOC) hai
+- Ye props ko check karta hai - agar props same hain, to component re-render NAHI hoga
+- Yahan `Header` ko koi props nahi pass ho rahe, to props hamesha same hain (empty)
+- Isliye sirf pehli baar render hota hai, baad mein nahi
+
+! Console output: Sirf ek baar "Header rendered!" - chahe kitni baar count badhao
+
+# Third version:
+
+* UseCallbackHook.jsx
+
+? function UseCallbackHook() {
+?   const [count, setCount] = useState(0);
+
+    !Whenever the re-render happens, it will create the function again and again,
+    !and thus the prop is changing, thus the header is re-rendering again and again.  
+?    const customFunction = () => {};
+?  return (
+?    <div>
+?      <h1>Let's learn useCallback Hook!</h1>
+?      <Header customFunction={customFunction} />
+?      <h2>Count: {count}</h2>
+?      <button onClick={() => setCount(count + 1)}>Increase Count</button>
+?    </div>
+?  );
+? }
+
+* Header.jsx
+
+? function Header() {
+?  console.log("Header rendered!");
+? return (
+?    <div>
+?      <h2>Header Component</h2>
+?    </div>
+?  );
+? }
+
+? export default React.memo(Header);
+
+# In the third version, the Header component is rendering on clicking on the count button; it renders that many times, why?
+
+Because we are passing a function as a prop to the Header component, and in JavaScript, functions are objects, and whenever the parent component re-renders, a new function is created in memory, thus the prop is changing, and hence the Header component is re-rendering again and again.
+
+# Version 3: Function prop pass kiya (Phir se baar baar render)
+
+```
+? const customFunction = () => {};
+? <Header customFunction={customFunction} />
+```
+
+* Kya ho raha hai:
+- Ab aap `customFunction` ko prop ke taur pe pass kar rahe ho
+- JavaScript mein har re-render pe naya function create hota hai
+- Matlab har baar `customFunction` ka reference change ho jata hai (memory mein naya function ban raha hai)
+- `React.memo` dekhta hai: "Arre! Props change ho gaye (naya function reference hai)"
+- Isliye Header phir se har baar render hone lagta hai
+
+* Samjho aise:
+```
+# Pehla render
+? const customFunction = () => {}; // Memory address: 0x001
+
+# Dusra render (count badha)
+? const customFunction = () => {}; // Memory address: 0x002 (NAYA!)
+
+! React.memo: "Props change hogaye!" → Re-render!
+
+# Fourth Version
+
+* UseCallbackHook.jsx
+? function UseCallbackHook() {
+?  const [count, setCount] = useState(0);
+?
+?   const customFunction = useCallback(() => {}, []);
+?
+?  return (
+?    <div>
+?      <h1>Let's learn useCallback Hook!</h1>
+?      <Header customFunction={customFunction} />
+?      <h2>Count: {count}</h2>
+?      <button onClick={() => setCount(count + 1)}>Increase Count</button>
+?    </div>
+?  );
+? }
+
+#Header.jsx
+
+? function Header() {
+?  console.log("Header rendered!");
+?  return (
+?    <div>
+?      <h2>Header Component</h2>
+?    </div>
+?  );
+? }
+
+? export default React.memo(Header);
+
+# This time header only render once until and unless the dependencies changes, why?
+
+Because The useCallback() hook will not create another function, it will use the cached function,
+Whenever it will create the function for the first time , it will cache the function in the memory,
+and whenever the re-renders happens, it will used the same cached function, and when the function will be same,
+the header prop will be same , and the prop is not changing, thus the header will not re-render again.
+
+
+# Version 4: useCallback use kiya (Problem solved!)
+
+```
+? const customFunction = useCallback(() => {}, []);
+? <Header customFunction={customFunction} />
+```
+
+* Kya ho raha hai:
+- `useCallback` function ko cache kar leta hai (memory mein save)
+- Pehli baar function banata hai aur uska reference yaad rakh leta hai
+- Jab component re-render hota hai, wahi purana cached function use karta hai (naya nahi banata)
+- Kyunki function ka reference same rehta hai, `React.memo` ko lagta hai props same hain
+- Isliye Header sirf ek baar render hota hai
+
+* Samjho aise:
+```
+# Pehla render
+? const customFunction = useCallback(() => {}, []); // Cache: 0x001
+
+# Dusra render (count badha)
+? const customFunction = useCallback(() => {}, []); // Cache se: 0x001 (SAME!)
+
+! React.memo: "Props same hain!" → No re-render!
+
+# Key Points:
+
+1. React.memo = Props same hain to re-render mat karo
+2. Functions JavaScript mein objects hain = Har baar naya reference
+3. useCallback = Function ko cache karo, reference same rakho
+4. Dependency array `[]` = Function sirf ek baar banao, phir cache use karo
