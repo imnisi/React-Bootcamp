@@ -1,0 +1,112 @@
+# -----------------------------useState Hook-----------------------------
+
+* useState Hook is a special function that takes the initial state as an argument and returns an array of two entries. The first entry is the current state, and the second is a function that updates the state.
+
+Syntax: const [state, setState] = useState(initialState);
+
+? const [car, setCar] = useState({
+?    brand: "Ferrari",
+?    model: "Roma",
+?    year: "2023",
+?    color: "Red",
+?  });
+
+?  return (
+?    <>
+?      <h1>Understanding useState Hook!</h1>
+?      <h2>My {car.brand}</h2>
+?      <p>
+?        <b>
+?          It is a {car.color} {car.model} from {car.year}
+?        </b>
+?      </p>
+!     <button
+!        onClick={() => {
+!          setCar(({ car }) => {
+!            car.color = "Blue";
+!          });
+!        }}
+!      >
+?        Change Color
+?      </button>
+?    </>
+?  );
+
+* On clicking on blue button ,it is not working, can you explain me in hinglish
+
+
+# Tumhara current code:
+
+```jsx
+? onClick={() => {
+?  setCar(({ car }) => {
+?    car.color = "Blue";
+?  });
+? }}
+```
+
+# Isme dikkat ye hai ki:
+
+* 1. Tumne galat tarike se function likha hai.
+!   `setCar` ka callback parameter directly purana state (car) hota hai,
+!   na ki `{ car }` object ke andar wrapped.
+!   Tumne likha hai `({ car })`, matlab destructuring kar rahe ho —
+!   lekin state object ka naam hi `car` hai, uske andar `car` property nahi hai.
+
+* 2. Dusri galti:
+!   `setCar` se tumhe naya object return karna hota hai.
+!   Tum sirf `car.color = "Blue"` likh rahe ho, par kuch return nahi kar rahe.
+!   React state immutable hoti hai — iska matlab, directly change nahi karna chahiye,
+!   balki ek naya object banake `setCar` ko dena hota hai.
+
+---
+
+# Sahi code:
+
+```jsx
+? <button
+?  onClick={() => {
+?    setCar((prevCar) => ({
+?      ...prevCar,      // purani properties ko rakh lo
+?      color: "Blue",   // bas color ko update kar do
+?    }));
+?  }}
+? >
+?  Change Color
+? </button>
+```
+console.log(...prevCar) // {brand: "Ferrari", model: "Roma", year: "2023", color: "Red"}
+
+# Hinglish Explanation:
+
+React me `useState` ka kaam hai ek state variable aur usko change karne wala function dena.
+Tumhare case me:
+
+? `car` — current value hai,
+? `setCar` — usko update karne wala function hai.
+
+! Jab tum `setCar` call karte ho, React expect karta hai ki tum naya object doge.
+! Par tumne purane object (`car`) ko directly modify kar diya —
+! React isse detect nahi kar paata, isliye UI re-render nahi hoti.
+
+# Isliye hum likhte hain:
+
+```js
+! setCar((prevCar) => ({ ...prevCar, color: "Blue" }))
+```
+
+# Meaning:
+
+* `prevCar` → purani car state le lo
+* `{ ...prevCar }` → uska ek copy banao
+* `color: "Blue"` → naya color overwrite kar do
+
+! React dekhta hai ki ek naya object aaya hai → fir wo component re-render karta hai.
+
+# Agar chaho to aur simple version bhi likh sakte ho:
+
+```jsx
+? <button onClick={() => setCar({ ...car, color: "Blue" })}>
+?  Change Color
+? </button>
+```

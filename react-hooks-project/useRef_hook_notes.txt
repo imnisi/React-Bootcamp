@@ -1,0 +1,42 @@
+# -----------------------------useRef Hook-----------------------------
+
+* useRef Hook is used to create a mutable reference that persists across re-renders of a functional component. It can be used to access and manipulate DOM elements directly, store mutable values, or keep track of previous state values without causing re-renders.
+
+Syntax: const refContainer = useRef(initialValue);
+
+In simple word, useRef hooks ka use krke jis bhi variable ko hum define krte hai wo variable mutable in nature hota hai aur component ke re-render hone par bhi apni value ko maintain krta hai. Aur jab bhi variables ki value change hoti to component re-render nhi hota hai.
+
+Iske alawa, useRef ka use hum kisi bhi DOM element ko directly access krne ke liye krte hai.
+
+* Example 1: Accessing DOM elements
+
+? import { useRef } from "react";
+? const inputRef = useRef(null);
+? return (  
+?   <>
+?     <input type="text" ref={inputRef} />
+?     <button onClick={() => inputRef.current.focus()}>Focus Input</button> 
+?   </>
+? );
+
+# Explanation:
+? In this example, we create a reference using useRef and attach it to an input element. When the button is clicked, we use the reference to focus the input field directly.
+
+
+
+
+* Example 2: Storing mutable values
+
+? import { useRef, useState } from "react";
+? const renderCount = useRef(0);
+? const [count, setCount] = useState(0);
+? renderCount.current += 1;
+? return (
+?   <>
+?     <h1>Count: {count}</h1>
+?     <h2>Render Count: {renderCount.current}</h2>
+?     <button onClick={() => setCount(count + 1)}>Increment Count</button>
+?   </>
+? );
+# Explanation:
+? In this example, we use useRef to keep track of the number of times the component has rendered. The renderCount variable is mutable and persists across re-renders without causing additional renders when it changes.
