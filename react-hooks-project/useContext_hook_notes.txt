@@ -1,0 +1,119 @@
+# -----------------------------useContext Hook-----------------------------
+
+useContext hook is a react hook that allows us to access data from any component without explicitly passing it down through props at every level.
+
+It is used to manage global data in the React Application when we build small application.
+
+# Context API Kya Hai?
+
+Context API ek React ka built-in feature hai jo props drilling ki problem solve karta hai. Simple words mein - jab tumhe data ko parent se bahut deep nested child components tak pass karna ho, tab Context API use hota hai.
+
+Analogy: Socho ek building hai jismein 10 floors hain. Tumhe ground floor se 10th floor tak paani pohchana hai. Props drilling mein tumhe har floor pe paani hand over karna padega (1st floor → 2nd floor → 3rd floor... 10th floor). Lekin Context API ek central water tank hai jo directly 10th floor ko paani de sakta hai!
+
+# Kyun Use Kare? (Why use it?)
+
+Problems jo Context API solve karti hai:
+
+Props Drilling: Baar-baar props pass karna har component through
+Code Repetition: Same props ko multiple components mein pass karna
+Maintenance: Agar data change karna ho toh har component update karna padta tha
+
+Example of Props Drilling Problem:
+! App → Header → Navbar → UserMenu → UserProfile
+User ka naam UserProfile mein chahiye, lekin usko App se leke jane ke liye Header, Navbar, UserMenu sabko props pass karna padega, chahe unhe use na ho!
+
+# Kab Use Kare? (When to use?)
+
+Context API tab use karo jab:
+Global data ho jo kaafi components ko chahiye:
+
+? User authentication status
+? Theme (Dark/Light mode)
+? Language preference
+? User profile data
+? Shopping cart data
+
+Data 3+ levels deep pass karna ho
+Multiple components ko same data chahiye ho different branches mein
+
+# Kab NAHI use karna chahiye:
+
+Simple parent-child communication ke liye (normal props use karo)
+High-frequency updates wale data ke liye (performance issues)
+Very large applications (Redux/Zustand better hai)
+
+# Kahan Use Kare? (Where to use?)
+
+? Authentication: Login/logout state, user info
+? Theme Management: Dark mode, light mode
+? Language/i18n: Multi-language support
+? Shopping Cart: E-commerce apps mein
+? Notifications: Global notification system
+? User Preferences: Settings jo app-wide chahiye
+
+# Context API Ke Components
+
+Context API ke 3 main parts hain:
+? 1. createContext - Context banana
+? 2. Provider - Data provide karna
+? 3. Consumer/useContext - Data consume karna
+
+* Step-by-Step Implementation
+Step 1: Context Create Karo
+? import { createContext } from 'react';
+
+Context banana - ek central storage
+? const UserContext = createContext();
+
+Step 2: Provider Setup Karo: Provider wo component hai jo data provide karta hai apne children ko
+
+? import { createContext, useState } from 'react';
+
+? const UserContext = createContext();
+
+? function UserProvider({ children }) {
+?  const [user, setUser] = useState({
+?    name: 'Raj Kumar',
+?    age: 25
+?  });
+
+?  return (
+?    <UserContext.Provider value={{ user, setUser }}>
+?      {children}
+?    </UserContext.Provider>
+?  );
+? }
+
+? export { UserContext, UserProvider };
+
+Step 3: App Mein Provider Wrap Karo
+
+? import { UserProvider } from './UserContext';
+? import Dashboard from './Dashboard';
+
+? function App() {
+?  return (
+?    <UserProvider>
+?      <Dashboard />
+?    </UserProvider>
+?  );
+? }
+
+Step 4: useContext Hook Se Data Access Karo
+
+? import { useContext } from 'react';
+? import { UserContext } from './UserContext';
+
+? function Profile() {
+?  const { user, setUser } = useContext(UserContext);
+  
+?  return (
+?    <div>
+?      <h1>Name: {user.name}</h1>
+?      <p>Age: {user.age}</p>
+?      <button onClick={() => setUser({ name: 'Priya', age: 23 })}>
+?        Update User
+?      </button>
+?   </div>
+?  );
+? }

@@ -1,6 +1,15 @@
 import React from "react";
 import { useState } from "react";
 import "./App.css";
+import UseStateHook from "./Hooks/UseStateHook.jsx";
+import UseStateHookNew from "./Hooks/UseStateHookNew.jsx";
+import UseEffectHook from "./Hooks/UseEffectHook.jsx";
+import UseRefHook from "./Hooks/UseRefHook.jsx";
+import UseRefHookNew from "./Hooks/UseRefHookNew.jsx";
+import UseMemoHook from "./Hooks/UseMemoHook.jsx";
+import UseCallbackHook from "./Hooks/UseCallbackHook.jsx";
+import Profile from "./components/Profile.jsx";
+import Footer from "./components/Footer.jsx";
 
 function App() {
   const [color, setColor] = useState("Red");
@@ -28,6 +37,15 @@ function App() {
       To make the color change reflect in the UI, we should use the useState hook to manage the color as state.
       */}
       <button onClick={changeColor}>Blue Button</button>
+      <UseStateHook />
+      <UseStateHookNew />
+      <UseEffectHook />
+      <UseRefHook />
+      <UseRefHookNew />
+      <UseMemoHook />
+      <UseCallbackHook />
+      <Profile />
+      <Footer />
     </>
   );
 }
