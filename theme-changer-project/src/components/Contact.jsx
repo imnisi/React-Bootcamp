@@ -7,6 +7,9 @@ function Contact() {
     <div>
       <h1>Contact Page</h1>
       <button
+        style={{
+          background: "red",
+        }}
         onClick={() => {
           navigate("contact-details");
         }}
