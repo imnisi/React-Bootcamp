@@ -14,6 +14,7 @@ import Github from "./components/Github";
 import ContactLayout from "./components/ContactLayout";
 import { AppContext } from "./context/ApiContext";
 import { useContext } from "react";
+import contactDetails from "./contactApiDetails";
 
 function App() {
   const { theme, setTheme } = useContext(AppContext);
@@ -24,7 +25,11 @@ function App() {
         <Route path="about" element={<About />} />
         <Route path="github" element={<Github />} />
         <Route path="contact" element={<ContactLayout />}>
-          <Route path="contact-details" element={<ContactDetails />} />
+          <Route
+            path="contact-details"
+            element={<ContactDetails />}
+            loader={contactDetails}
+          />
         </Route>
       </Route>
     )
@@ -45,7 +50,6 @@ function App() {
         <button
           onClick={() => {
             setTheme("white");
-
           }}
         >
           Click here for Light Theme

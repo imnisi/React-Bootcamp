@@ -1,0 +1,39 @@
+{
+  "contactDetails": [
+    {
+      "id": 1,
+      "name": "John Doe",
+      "email": "johndoe@gmail.com",
+      "phone": "+1234567890",
+      "address": "123 Main St, City, Country"
+    },
+    {
+      "id": 2,
+      "name": "Jane Smith",
+      "email": "janesmith@gmail.com",
+      "phone": "+0987654321",
+      "address": "456 Elm St, City, Country"
+    },
+    {
+      "id": 3,
+      "name": "Alice Johnson",
+      "email": "alicejohn@outlook.com",
+      "phone": "+1122334455",
+      "address": "789 Oak St, City, Country"
+    },
+    {
+      "id": 4,
+      "name": "Bob Brown",
+      "email": "Bbrown@outlook.com",
+      "phone": "+5566778899",
+      "address": "101 Pine St, City, Country"
+    },
+    {
+      "id": 5,
+      "name": "Charlie Davis",
+      "email": "charliedavis@yahoo.com",
+      "phone": "+6677889900",
+      "address": "202 Maple St, City, Country"
+    }
+  ]
+}

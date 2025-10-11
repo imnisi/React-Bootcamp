@@ -1,12 +1,12 @@
 import React from "react";
-import { useNavigate } from "react-router";
+import { useNavigate, Link } from "react-router";
 
 function Contact() {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   return (
     <div>
       <h1>Contact Page</h1>
-      <button
+      {/* <button
         style={{
           background: "red",
         }}
@@ -15,7 +15,8 @@ function Contact() {
         }}
       >
         Click Here to go on contact details
-      </button>
+      </button> */}
+      <Link to="contact-details">Click Here to go on contact details</Link>
     </div>
   );
 }
