@@ -10,6 +10,7 @@ import UseMemoHook from "./Hooks/UseMemoHook.jsx";
 import UseCallbackHook from "./Hooks/UseCallbackHook.jsx";
 import Profile from "./components/Profile.jsx";
 import Footer from "./components/Footer.jsx";
+import UseReducerHook from "./Hooks/UseReducerHook.jsx";
 
 function App() {
   const [color, setColor] = useState("Red");
@@ -46,6 +47,7 @@ function App() {
       <UseCallbackHook />
       <Profile />
       <Footer />
+      <UseReducerHook />
     </>
   );
 }
