@@ -1,0 +1,99 @@
+# -----------------------------useLayoutEffect Hook-----------------------------
+
+useLayout Effect works similar to useEffect Hook but it is called before the user interface gets mounted.
+That means, useEffect hook called  after printing DOM elements, But useLayoutEffect hook is called before printing the DOM elements.
+
+
+User clicks button
+    ↓
+State updates
+    ↓
+React calculates new UI (Virtual DOM)
+    ↓
+┌─────────────────────────────────────┐
+│ useLayoutEffect runs HERE           │ ← DOM updated but screen paint nahi hua
+│ (Synchronously - blocks painting)   │
+└─────────────────────────────────────┘
+    ↓
+Browser paints screen (User sees changes)
+    ↓
+┌─────────────────────────────────────┐
+│ useEffect runs HERE                 │ ← After screen paint
+│ (Asynchronously - doesn't block)    │
+└─────────────────────────────────────┘
+
+#| Hook             | Kab Chalti Hai         | Blocking?| Use Case                          |
+|-------------------|------------------------|----------|-----------------------------------|
+| useEffect         | Screen paint ke BAAD   | No       | API calls, subscriptions, logging |
+| useLayoutEffect   | Screen paint se PEHLE  | Yes      | DOM measurements, animations      |
+---------------------------------------------------------------------------------------------
+
+
+# Dom measurement
+
+* Scenario: Tooltip ko element ke exact position pe show karna hai
+
+? import { useState, useLayoutEffect, useRef } from "react";
+
+? function TooltipExample() {
+?  const [tooltipPosition, setTooltipPosition] = useState({ top: 0, left: 0 });
+?  const buttonRef = useRef(null);
+?  const [showTooltip, setShowTooltip] = useState(false);
+
+?  useLayoutEffect(() => {
+?    if (showTooltip && buttonRef.current) {
+!        DOM element ka exact position measure karo
+?      const rect = buttonRef.current.getBoundingClientRect();
+      
+!          Tooltip ko button ke upar position karo
+?      setTooltipPosition({
+?        top: rect.top - 40, // 40px upar
+?        left: rect.left + rect.width / 2 // Center mein
+?      });
+?    }
+?  }, [showTooltip]);
+
+?  return (
+?    <div style={{ padding: "100px" }}>
+?      <button
+?        ref={buttonRef}
+?        onClick={() => setShowTooltip(!showTooltip)}
+?       style={{
+?          padding: "10px 20px",
+?         backgroundColor: "#007bff",
+?          color: "white",
+?          border: "none",
+?          borderRadius: "5px",
+?          cursor: "pointer"
+?        }}
+?      >
+?        Hover Me
+?      </button>
+
+?      {showTooltip && (
+?        <div
+?          style={{
+?            position: "fixed",
+?            top: `${tooltipPosition.top}px`,
+?            left: `${tooltipPosition.left}px`,
+?            transform: "translateX(-50%)",
+?            backgroundColor: "black",
+?            color: "white",
+?            padding: "5px 10px",
+?            borderRadius: "4px",
+?            fontSize: "12px",
+?            whiteSpace: "nowrap"
+?          }}
+?        >
+?          This is a tooltip!
+?        </div>
+?      )}
+?    </div>
+?  );
+? }
+
+# Why useLayoutEffect?
+
+getBoundingClientRect() se exact position nikalni hai
+Agar useEffect use karenge toh tooltip pehle galat position pe dikhega, phir sahi position pe jump karega (flicker!)
+useLayoutEffect se pehli baar mein hi sahi position pe dikhega! ✅

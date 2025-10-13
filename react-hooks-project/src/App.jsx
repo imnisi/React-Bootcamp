@@ -11,6 +11,9 @@ import UseCallbackHook from "./Hooks/UseCallbackHook.jsx";
 import Profile from "./components/Profile.jsx";
 import Footer from "./components/Footer.jsx";
 import UseReducerHook from "./Hooks/UseReducerHook.jsx";
+import UseLayoutEffectHook from "./Hooks/UseLayoutEffectHook.jsx";
+import UseLayoutEffectHookEx from "./Hooks/UseLayoutEffectHookEx.jsx";
+import DomMeasurement from "./components/DomMeasurement.jsx";
 
 function App() {
   const [color, setColor] = useState("Red");
@@ -48,6 +51,9 @@ function App() {
       <Profile />
       <Footer />
       <UseReducerHook />
+      <UseLayoutEffectHook />
+      <UseLayoutEffectHookEx />
+      <DomMeasurement />
     </>
   );
 }
