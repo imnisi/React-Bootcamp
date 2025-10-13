@@ -19,12 +19,12 @@ function UseReducerHook() {
       <h2>Count: {state.count}</h2>
       <button
         onClick={() => {
-          dispatch({ state, type: "increase" });
+          dispatch({ type: "increase" });
         }}
       >
         Increase Count
       </button>
-      <button onClick={() => dispatch({ state, type: "decrease" })}>
+      <button onClick={() => dispatch({ type: "decrease" })}>
         Decrease Count
       </button>
       <br />
