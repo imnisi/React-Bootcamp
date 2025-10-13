@@ -96,4 +96,22 @@ Browser paints screen (User sees changes)
 
 getBoundingClientRect() se exact position nikalni hai
 Agar useEffect use karenge toh tooltip pehle galat position pe dikhega, phir sahi position pe jump karega (flicker!)
-useLayoutEffect se pehli baar mein hi sahi position pe dikhega! ✅
+useLayoutEffect se pehli baar mein hi sahi position pe dikhega!
+
+# Summary:
+
+* useLayoutEffect use karo jab:
+
+DOM measurement chahiye (getBoundingClientRect, etc.)
+Visual flickering fix karni ho
+Scroll position set karna ho
+Animations synchronously start karni ho
+
+* useLayoutEffect mat use karo jab:
+
+API calls karni ho
+Heavy calculations ho
+Side effects jo visual changes se related nahi
+
+! Simple rule: 99% cases mein useEffect hi kaafi hai. Only when visible glitches ho tab useLayoutEffect use karo!
+
