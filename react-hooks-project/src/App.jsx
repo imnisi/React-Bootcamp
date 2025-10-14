@@ -14,6 +14,7 @@ import UseReducerHook from "./Hooks/UseReducerHook.jsx";
 import UseLayoutEffectHook from "./Hooks/UseLayoutEffectHook.jsx";
 import UseLayoutEffectHookEx from "./Hooks/UseLayoutEffectHookEx.jsx";
 import DomMeasurement from "./components/DomMeasurement.jsx";
+import CustomHook from "./Hooks/CustomHook.jsx";
 
 function App() {
   const [color, setColor] = useState("Red");
@@ -54,6 +55,7 @@ function App() {
       <UseLayoutEffectHook />
       <UseLayoutEffectHookEx />
       <DomMeasurement />
+      <CustomHook/>
     </>
   );
 }

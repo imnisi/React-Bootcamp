@@ -1,0 +1,430 @@
+#================================Custom Hook==============================================
+
+# Custom Hook File - `UseLocalStorage.jsx`
+
+```
+? import React, { useEffect, useState } from "react";
+```
+* Step 1: React aur hooks import kiye (useEffect aur useState)
+```
+? function UseLocalStorage(key, initialValue) {
+```
+* Step 2: Custom hook function banaya
+- Parameters:
+  - `key` = localStorage mein kis naam se save karna hai (e.g., "username", "id")
+  - `initialValue` = Agar localStorage mein kuch nahi hai toh default value kya hogi
+
+Example call:
+```
+? UseLocalStorage("username", "")
+? key = "username"
+? initialValue = ""
+```
+
+```
+?   const [data, setData] = useState(localStorage.getItem(key) || initialValue);
+```
+* Step 3: State initialize ki
+
+Breakdown:
+```
+? localStorage.getItem(key)
+localStorage mein "username" key se value nikalo
+|| initialValue
+
+Agar localStorage mein kuch nahi mila (null), toh initialValue use karo
+
+? const [data, setData] = useState(...)
+ Is value ko state mein store karo
+```
+
+Example:
+```
+ First time (localStorage empty):
+
+? localStorage.getItem("username") // → null
+? null || "" // → ""
+? data = "" 
+
+Second time (localStorage has "Rahul"):
+
+? localStorage.getItem("username") // → "Rahul"
+? "Rahul" || "" // → "Rahul"
+? data = "Rahul"
+
+```
+
+```
+? useEffect(() => {
+?    localStorage.setItem(key, data);
+?  }, [key, data]);
+
+```
+* Step 4: useEffect - Jab bhi `data` ya `key` change ho, localStorage mein save karo
+
+Breakdown:
+```
+? localStorage.setItem(key, data)
+  localStorage mein key-value pair save karo
+?  Example: localStorage.setItem("username", "Rahul")
+? [key, data]
+  Dependency array - jab ye dono mein se koi change ho, effect run karo
+```
+
+* Timeline:
+```
+1. User types "R" in input
+   ↓
+2. setData("R") called
+   ↓
+3. data state updates to "R"
+   ↓
+4. useEffect triggers (because data changed)
+   ↓
+5. localStorage.setItem("username", "R") runs
+   ↓
+6. localStorage mein save ho gaya!
+```
+```
+?  return [data, setData];
+}
+```
+* Step 5: Array return kiya (same format as useState)
+- `data` = Current value
+- `setData` = Function to update value
+
+Similar to:
+```
+? const [state, setState] = useState(0);
+Custom hook bhi same pattern follow karta hai
+```
+```
+? export default UseLocalStorage;
+```
+* Step 6: Hook ko export kiya taaki dusri files use kar sakein
+
+
+
+# Component File - `CustomHook.jsx`
+
+```
+? import React, { useEffect, useState } from "react";
+? import UseLocalStorage from "../../public/UseLocalStorage";
+```
+* Step 1: React hooks aur custom hook import kiye
+```
+? function CustomHook() {
+```
+* Step 2: Main component start
+
+```
+?  const [name, setName] = UseLocalStorage("username", "");
+```
+* Step 3: Custom hook use kiya for `name`
+
+# Behind the scenes:
+```
+Hook ke andar:
+
+? const [data, setData] = useState(localStorage.getItem("username") || "");
+? useEffect(() => {
+?  localStorage.setItem("username", data);
+? }, ["username", data]);
+? return [data, setData];
+
+Component ko milta hai:
+
+? [name, setName] = [data, setData]
+```
+
+# What happens:
+1. Hook check karta hai localStorage mein "username" key
+2. Agar mila toh use karo, nahi toh `""` use karo
+3. `name` aur `setName` return karta hai
+4. Jab bhi `name` change hoga, automatically localStorage mein save ho jayega
+
+```
+?  const [id, setId] = UseLocalStorage("id", "");
+```
+* Step 4: Same custom hook dubara use kiya for `id`
+- Bilkul alag state maintain hoga
+- Alag localStorage key ("id") use hoga
+
+# Hook ka beauty:
+```
+Ek hi hook, multiple jagah use kar sakte ho!
+? const [name, setName] = UseLocalStorage("username", "");
+? const [id, setId] = UseLocalStorage("id", "");
+? const [age, setAge] = UseLocalStorage("age", 0);
+? const [email, setEmail] = UseLocalStorage("email", "");
+!No code repetition! 
+```
+```
+?      <input
+?        type="text"
+?        placeholder="Enter your name"
+?        value={name}
+?        onChange={(e) => {
+?          setName(e.target.value);
+?        }}
+?      />
+```
+* Step 5: Name input field
+
+# Flow:
+```
+1. User types "Rahul"
+   ↓
+2. onChange triggers
+   ↓
+3. setName("Rahul") called
+   ↓
+4. Custom hook ke andar:
+   - data state updates to "Rahul"
+   - useEffect triggers
+   - localStorage.setItem("username", "Rahul")
+   ↓
+5. Component re-renders with name = "Rahul"
+   ↓
+6. Input shows "Rahul" (value={name})
+```
+
+```
+?      {name && name.trim() !== "" && <h2>Hello! {name} </h2>}
+```
+* Step 6: Conditional rendering
+
+# Breakdown:
+```
+name                  // Check if name exists (not empty string)
+&&                    // AND
+name.trim() !== ""   // Check if name is not just spaces
+&&                    // AND
+<h2>Hello! {name}</h2>  // Show greeting
+```
+
+# Examples:
+```
+name = ""           → Nothing shows 
+name = "   "        → Nothing shows 
+name = "Rahul"      → "Hello! Rahul" shows 
+```
+```
+?      <input
+?        type="number"
+?        placeholder="Enter your id"
+?        value={id}
+?        onChange={(e) => {
+?          setId(e.target.value);
+?        }}
+?      />
+```
+* Step 7: ID input field - same pattern as name
+
+# Flow:
+```
+User types "123"
+   ↓
+setId("123")
+   ↓
+Custom hook saves to localStorage.setItem("id", "123")
+   ↓
+Component re-renders
+   ↓
+Input shows "123"
+```
+```
+?      {id && <h3> User id: {id}</h3>}
+```
+* Step 8: ID display - simpler condition (only checks if id exists)
+
+
+# Complete Flow Visualization:
+
+```
+┌─────────────────────────────────────────────────────────┐
+│ Component Loads                                         │
+└─────────────────────────────────────────────────────────┘
+                    ↓
+┌─────────────────────────────────────────────────────────┐
+│ UseLocalStorage("username", "") hook calls              │
+│   1. Check localStorage.getItem("username")             │
+│   2. If null, use ""                                    │
+│   3. Set initial state                                  │
+│   4. Return [name, setName]                             │
+└─────────────────────────────────────────────────────────┘
+                    ↓
+┌─────────────────────────────────────────────────────────┐
+│ UseLocalStorage("id", "") hook calls                    │
+│   1. Check localStorage.getItem("id")                   │
+│   2. If null, use ""                                    │
+│   3. Set initial state                                  │
+│   4. Return [id, setId]                                 │
+└─────────────────────────────────────────────────────────┘
+                    ↓
+┌─────────────────────────────────────────────────────────┐
+│ Component renders with initial values                   │
+│   - name = ""                                           │
+│   - id = ""                                             │
+└─────────────────────────────────────────────────────────┘
+                    ↓
+┌─────────────────────────────────────────────────────────┐
+│ User types "Rahul" in name input                        │
+└─────────────────────────────────────────────────────────┘
+                    ↓
+┌─────────────────────────────────────────────────────────┐
+│ onChange → setName("Rahul")                             │
+└─────────────────────────────────────────────────────────┘
+                    ↓
+┌─────────────────────────────────────────────────────────┐
+│ Custom Hook (inside):                                   │
+│   1. data state updates to "Rahul"                      │
+│   2. useEffect triggers                                 │
+│   3. localStorage.setItem("username", "Rahul")          │
+└─────────────────────────────────────────────────────────┘
+                    ↓
+┌─────────────────────────────────────────────────────────┐
+│ Component re-renders                                    │
+│   - name = "Rahul"                                      │
+│   - Shows "Hello! Rahul"                                │
+└─────────────────────────────────────────────────────────┘
+                    ↓
+┌─────────────────────────────────────────────────────────┐
+│ User refreshes page                                     │
+└─────────────────────────────────────────────────────────┘
+                    ↓
+┌─────────────────────────────────────────────────────────┐
+│ UseLocalStorage hook loads                              │
+│   - localStorage.getItem("username") → "Rahul"          │
+│   - Initial state = "Rahul"                             │
+│   - Shows "Hello! Rahul" immediately!               │
+└─────────────────────────────────────────────────────────┘
+```
+# Key Concepts:
+
+Rules:
+- Name must start with "use" (convention)
+- Can use other React hooks inside
+- Returns data (usually state and setState)
+- Reusable across components
+
+
+
+# Why Custom Hook?
+
+Without custom hook (repetitive):
+```
+* Component 1
+? const [name, setName] = useState(localStorage.getItem("name") || "");
+? useEffect(() => { localStorage.setItem("name", name); }, [name]);
+
+* Component 2
+? const [email, setEmail] = useState(localStorage.getItem("email") || "");
+? useEffect(() => { localStorage.setItem("email", email); }, [email]);
+
+* Component 3
+? const [age, setAge] = useState(localStorage.getItem("age") || "");
+? useEffect(() => { localStorage.setItem("age", age); }, [age]);
+```
+
+# With custom hook (clean):
+```
+* Component 1
+? const [name, setName] = UseLocalStorage("name", "");
+
+* Component 2
+? const [email, setEmail] = UseLocalStorage("email", "");
+
+* Component 3
+? const [age, setAge] = UseLocalStorage("age", "");
+```
+
+# localStorage Behavior:
+
+```
+* Save
+? localStorage.setItem("username", "Rahul");
+
+* Get
+? localStorage.getItem("username"); // → "Rahul"
+
+* Remove
+? localStorage.removeItem("username");
+
+* Clear all
+? localStorage.clear();
+
+* Check if exists
+? if (localStorage.getItem("username")) { ... }
+```
+
+
+
+# Benefits of This Code:
+
+1.DRY (Don't Repeat Yourself): Ek baar logic likha, bahut baar use kiya
+2.Reusable: Kisi bhi component mein use kar sakte ho
+3.Maintainable: Ek jagah change karo, sab jagah effect hoga
+4.Clean: Component code simple aur readable
+5.Persistent: Page refresh ke baad bhi data rahega
+
+
+! Note: Component re-render hota hai useState ki wajah se, not useEffect!
+! useEffect kabhi bhi directly re-render nahi karta!
+
+# Scenario: User type "R" input
+
+┌─────────────────────────────────────────────────────────┐
+│ STEP 1: User types "R"                                  │
+└─────────────────────────────────────────────────────────┘
+                    ↓
+┌─────────────────────────────────────────────────────────┐
+│ STEP 2: onChange triggers                               │
+│   setName("R") is called                                │
+└─────────────────────────────────────────────────────────┘
+                    ↓
+┌─────────────────────────────────────────────────────────┐
+│ STEP 3: useState updates (inside custom hook)           │
+│   setData("R") runs                                     │
+│   data state changes: "" → "R"                          │
+│   ⚡ STATE CHANGE = RE-RENDER SCHEDULED                 │
+└─────────────────────────────────────────────────────────┘
+                    ↓
+┌─────────────────────────────────────────────────────────┐
+│ STEP 4: Component RE-RENDERS 🔄                         │
+│   - name = "R" (new value from state)                   │
+│   - UI updates, input shows "R"                         │
+│   - Custom hook function runs again                     │
+└─────────────────────────────────────────────────────────┘
+                    ↓
+┌─────────────────────────────────────────────────────────┐
+│ STEP 5: useEffect runs (AFTER re-render complete)       │
+│   localStorage.setItem("username", "R")                 │
+│   ⚠️ This does NOT cause re-render!                     │
+└─────────────────────────────────────────────────────────┘
+
+# useEffect runs AFTER render:
+
+Render cycle:
+1. State changes (useState)
+2. Component re-renders
+3. UI updates
+4. useEffect runs ← (Last step!)
+
+# Re-render Kab Hota Hai?
+
+!These cause re-render:
+
+useState - setState() call
+useReducer - dispatch() call
+Parent re-renders - Parent ka state change
+Context changes - Context value update
+Force update - forceUpdate() (rare)
+
+! These DON'T cause re-render:
+
+useEffect - Side effects only
+useRef - Mutable reference (no re-render)
+localStorage.setItem - External storage
+console.log - Just logging
+Regular variables - Only during render
