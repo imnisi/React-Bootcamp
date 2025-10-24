@@ -1,18 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
 import Navbar from "./components/Navbar";
+import FirstComponent from "./components/FirstComponent";
+import UseRefHook from "./components/UseRefHook";
 
 function App() {
   let value = "Let's learn React";
   let array = ["user1", "user2", "user3", "user4", "user5"];
   let data = "Boy";
+  const [num, setNum] = useState(0);
 
-  let val = 0;
+  // const btnClickedMethod = () => {
+  //   console.log("Button Clicked");
+  //   val += 1;
+  //   console.log(val);
+  // };
 
   const btnClickedMethod = () => {
     console.log("Button Clicked");
-    val += 1;
-    console.log(val);
+    setNum(num + 1);
+    console.log(num);
   };
+
+  console.log("Parent component Render");
+
   return (
     <>
       <div>App</div>
@@ -21,8 +31,8 @@ function App() {
       <div>
         <h3>Array Values:</h3>
         <div className="array-items">
-          {array.map((user, key) => {
-            return <p key={key}>{user}</p>;
+          {array.map((user, index) => {
+            return <p key={index}>{user}</p>;
           })}
         </div>
       </div>
@@ -34,7 +44,10 @@ function App() {
       <br />
       <div>
         <button onClick={btnClickedMethod}>Click Here</button>
+        Number: {num}
       </div>
+      <FirstComponent val={num} fn={setNum} />
+      <UseRefHook />
     </>
   );
 }
