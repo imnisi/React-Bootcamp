@@ -1,4 +1,8 @@
 import React, { useEffect, useState } from "react";
+import TodoItems from "../../../todo-list-project-new/src/components/TodoItems";
+import EditIcon from "../assets/edit icon.png";
+import CrossIcon from "../assets/cross icon.png";
+import Modal from "./Modal";
 
 function Todos() {
   const [todos, setTodos] = useState(() => {
@@ -7,6 +11,7 @@ function Todos() {
 
   const [inputItem, setInputItem] = useState("");
   const [description, setDescription] = useState("");
+  const [showPopupModal, setShowPopUpModal] = useState(false);
 
   const addItem = () => {
     if (!inputItem.trim() || !description.trim()) return;
@@ -23,11 +28,30 @@ function Todos() {
     setDescription("");
   };
 
-  const toggleCheck = (id) => {};
+  const toggleCheck = (id) => {
+    setTodos((prevTodos) =>
+      prevTodos.map((todo) =>
+        todo.id === id ? { ...todo, isChecked: !todo.isChecked } : todo
+      )
+    );
+  };
+
+  const updateTodos = (id) => {
+    // console.log("update", todos);
+    setTodos((prevTodos) =>
+      prevTodos.map((todo) =>
+        todo.id === id ? { ...todo, text: inputItem, desc: description } : todo
+      )
+    );
+    setInputItem("");
+    setDescription("");
+  };
 
   useEffect(() => {
     localStorage.setItem("todo-items", JSON.stringify(todos));
   }, [todos]);
+
+  console.log("INPUT", inputItem);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-8">
@@ -78,18 +102,50 @@ function Todos() {
             </div>
             <div className="space-y-4">
               {todos.map((item, index) => (
-                <>
-                  <input type="checkbox" onClick={toggleCheck(item.id)} />
-                  <div
-                    key={index}
-                    className="bg-white rounded-xl shadow-md p-5 hover:shadow-lg transition border-l-4 border-indigo-500"
-                  >
-                    <h3 className="text-lg font-semibold text-gray-800 mb-2">
-                      {item.text}
-                    </h3>
+                <div key={index}>
+                  <input
+                    type="checkbox"
+                    onChange={() => toggleCheck(item.id)}
+                    checked={item.isChecked}
+                  />
+                  <div className="bg-white rounded-xl shadow-md p-5 hover:shadow-lg transition border-l-4 border-indigo-500">
+                    <div className="flex">
+                      <h3 className="text-lg font-semibold text-gray-800 mb-2">
+                        {item.text}
+                      </h3>
+                      {item.isChecked && (
+                        <>
+                          <img
+                            src={EditIcon}
+                            alt="edit"
+                            style={{ height: "20px", width: "20px" }}
+                            onClick={() => {
+                              setInputItem(item.text); // Set current todo's text
+                              setDescription(item.desc); // Set current todo's description
+                              setShowPopUpModal(!showPopupModal);
+                            }}
+                          />
+                          {showPopupModal && (
+                            <Modal
+                              id={item.id}
+                              inputItem={inputItem}
+                              setInputItem={setInputItem}
+                              description={description}
+                              setDescription={setDescription}
+                              updateTodos={updateTodos}
+                            />
+                          )}
+                          <img
+                            src={CrossIcon}
+                            alt="cross"
+                            style={{ height: "20px", width: "20px" }}
+                          />
+                        </>
+                      )}
+                    </div>
                     <p className="text-gray-600 leading-relaxed">{item.desc}</p>
                   </div>
-                </>
+                </div>
               ))}
             </div>
           </div>
