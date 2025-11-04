@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useRef } from "react";
 import { X } from "lucide-react";
+import TodoInput from "./TodoInput";
 
 function Modal({
   id,
@@ -8,44 +9,49 @@ function Modal({
   description,
   setDescription,
   updateTodos,
+  onClose,
 }) {
+  const modalRef = useRef(null);
+
+  const closeModal = (e) => {
+    if (modalRef.current === e.target) onClose();
+  };
   return (
-    <div className="fixed inset-0 bg-opacity-30 backdrop-blur-sm flex justify-center">
-      <div className="mt-10 flex-col gap-5 text-black">
-        <button className="place-self-end">
-          <X size={30} />
-        </button>
-        <div className="bg-indigo-600 rounded-xl px-20 py-10 flex-col gap-5 item-center mx-4">
-          <h2 className="text-2xl font-bold">Please update your Todo!</h2>
-          <input
-            type="text"
-            value={inputItem}
-            onChange={(e) => setInputItem(e.target.value)}
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition"
-          />
-          <div>
-            <label
-              htmlFor="description"
-              className="block text-sm font-medium text-gray-700 mb-2"
-            >
-              Description
-            </label>
-            <textarea
-              id="description"
-              rows="5"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition resize-none"
-            ></textarea>
-          </div>
-          <div className="flex gap-3">
-            <button
-              onClick={() => updateTodos(id)}
-              className="flex-1 bg-yellow-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-indigo-700 transition shadow-md hover:shadow-lg"
-            >
-              Update
-            </button>
-          </div>
+    <div
+      className="fixed inset-0 bg-black/30 backdrop-blur-2xl flex items-center justify-center"
+      ref={modalRef}
+      onClick={closeModal}
+    >
+      <div className="bg-white rounded-xl shadow-lg w-full max-w-lg mx-4 p-6">
+        <div className="flex items-start justify-between mb-4">
+          <h2 className="text-xl font-semibold">Update Todo</h2>
+          <button
+            className="text-gray-500 hover:text-gray-700"
+            onClick={onClose}
+            aria-label="Close"
+          >
+            <X size={22} />
+          </button>
+        </div>
+        <TodoInput
+          inputItem={inputItem}
+          setInputItem={setInputItem}
+          description={description}
+          setDescription={setDescription}
+        />
+        <div className="flex gap-3 mt-4">
+          <button
+            onClick={() => updateTodos(id)}
+            className="flex-1 bg-indigo-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-indigo-700 transition shadow-sm"
+          >
+            Update
+          </button>
+          <button
+            onClick={onClose}
+            className="px-4 py-3 rounded-lg border border-gray-200"
+          >
+            Cancel
+          </button>
         </div>
       </div>
     </div>

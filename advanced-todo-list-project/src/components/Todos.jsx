@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import TodoItems from "../../../todo-list-project-new/src/components/TodoItems";
 import EditIcon from "../assets/edit icon.png";
 import CrossIcon from "../assets/cross icon.png";
 import Modal from "./Modal";
+import TodoInput from "./TodoInput";
+import TodoListIcon from "../assets/todo-list.svg?react";
 
 function Todos() {
   const [todos, setTodos] = useState(() => {
@@ -11,7 +12,7 @@ function Todos() {
 
   const [inputItem, setInputItem] = useState("");
   const [description, setDescription] = useState("");
-  const [showPopupModal, setShowPopUpModal] = useState(false);
+  const [editingTodoId, setEditingTodoId] = useState(null);
 
   const addItem = () => {
     if (!inputItem.trim() || !description.trim()) return;
@@ -45,105 +46,108 @@ function Todos() {
     );
     setInputItem("");
     setDescription("");
+    setEditingTodoId(null);
+  };
+
+  const deleteTodo = (id) => {
+    setTodos((prevTodos) => {
+      return prevTodos.filter((todo) => todo.id !== id);
+    });
   };
 
   useEffect(() => {
     localStorage.setItem("todo-items", JSON.stringify(todos));
   }, [todos]);
 
-  console.log("INPUT", inputItem);
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-8">
+    <div className="min-h-screen p-8">
       <div className="max-w-2xl mx-auto">
-        <h1 className="text-4xl font-bold text-gray-800 mb-8 text-center">
-          My Todo List
-        </h1>
+        <div className="text-4xl font-extrabold text-gray-800 mb-8 text-center tracking-tight flex items-center justify-center gap-2.5">
+          Todo List
+          <TodoListIcon style={{ height: "35px", width: "35px" }} />
+        </div>
 
-        <div className="bg-white rounded-xl shadow-lg p-6 mb-6">
+        <div className="bg-white rounded-2xl shadow-xl p-6 mb-6">
           <div className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Todo Title
-              </label>
-              <input
-                type="text"
-                placeholder="Type your todo"
-                value={inputItem}
-                onChange={(e) => setInputItem(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition"
-              />
-            </div>
-
-            <div>
-              <label
-                htmlFor="description"
-                className="block text-sm font-medium text-gray-700 mb-2"
-              >
-                Description
-              </label>
-              <textarea
-                id="description"
-                rows="5"
-                placeholder="Enter your description here..."
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition resize-none"
-              ></textarea>
-            </div>
-
+            <TodoInput
+              label="Todo Title"
+              inputItem={inputItem}
+              setInputItem={setInputItem}
+              description={description}
+              setDescription={setDescription}
+            />
             <div className="flex gap-3">
               <button
                 onClick={addItem}
-                className="flex-1 bg-indigo-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-indigo-700 transition shadow-md hover:shadow-lg"
+                className="flex-1 bg-gradient-to-r from-indigo-600 to-indigo-500 text-white px-6 py-3 rounded-lg font-semibold hover:from-indigo-700 hover:to-indigo-600 transition-all duration-200 shadow-md hover:shadow-lg"
               >
-                Add
+                Add Todo
               </button>
             </div>
-            <div className="space-y-4">
+            <div className="space-y-3 max-h-[190px] overflow-y-auto pr-2">
               {todos.map((item, index) => (
                 <div key={index}>
-                  <input
-                    type="checkbox"
-                    onChange={() => toggleCheck(item.id)}
-                    checked={item.isChecked}
-                  />
-                  <div className="bg-white rounded-xl shadow-md p-5 hover:shadow-lg transition border-l-4 border-indigo-500">
-                    <div className="flex">
-                      <h3 className="text-lg font-semibold text-gray-800 mb-2">
-                        {item.text}
-                      </h3>
-                      {item.isChecked && (
-                        <>
-                          <img
-                            src={EditIcon}
-                            alt="edit"
-                            style={{ height: "20px", width: "20px" }}
-                            onClick={() => {
-                              setInputItem(item.text); // Set current todo's text
-                              setDescription(item.desc); // Set current todo's description
-                              setShowPopUpModal(!showPopupModal);
-                            }}
-                          />
-                          {showPopupModal && (
-                            <Modal
-                              id={item.id}
-                              inputItem={inputItem}
-                              setInputItem={setInputItem}
-                              description={description}
-                              setDescription={setDescription}
-                              updateTodos={updateTodos}
-                            />
+                  <div className="bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-200 border-l-4 border-indigo-500 p-4 flex items-start gap-3">
+                    <input
+                      type="checkbox"
+                      onChange={() => toggleCheck(item.id)}
+                      checked={item.isChecked}
+                      className="mt-1.5 h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 transition-all duration-200 cursor-pointer"
+                    />
+                    <div className="ml-1 flex-1 min-w-0">
+                      <div className="flex items-center justify-between gap-3">
+                        <h3 className="text-lg font-semibold mb-1 truncate text-gray-800">
+                          {item.text}
+                        </h3>
+                        <div className="flex items-center gap-2">
+                          {item.isChecked && (
+                            <>
+                              <button
+                                className="p-2 rounded-md hover:bg-gray-100 transition-colors duration-150"
+                                onClick={() => {
+                                  setInputItem(item.text);
+                                  setDescription(item.desc);
+                                  setEditingTodoId(item.id);
+                                }}
+                                aria-label={`Edit ${item.text}`}
+                              >
+                                <img
+                                  src={EditIcon}
+                                  alt="edit"
+                                  className="h-4 w-4"
+                                />
+                              </button>
+                              {editingTodoId === item.id && (
+                                <Modal
+                                  id={item.id}
+                                  inputItem={inputItem}
+                                  setInputItem={setInputItem}
+                                  description={description}
+                                  setDescription={setDescription}
+                                  setEditingTodoId={setEditingTodoId}
+                                  updateTodos={updateTodos}
+                                  onClose={() => setEditingTodoId(null)}
+                                />
+                              )}
+                              <button
+                                className="p-2 rounded-md hover:bg-red-50 transition-colors duration-150"
+                                onClick={() => deleteTodo(item.id)}
+                                aria-label={`Delete ${item.text}`}
+                              >
+                                <img
+                                  src={CrossIcon}
+                                  alt="delete"
+                                  className="h-4 w-4"
+                                />
+                              </button>
+                            </>
                           )}
-                          <img
-                            src={CrossIcon}
-                            alt="cross"
-                            style={{ height: "20px", width: "20px" }}
-                          />
-                        </>
-                      )}
+                        </div>
+                      </div>
+                      <p className="text-sm leading-relaxed text-gray-600">
+                        {item.desc}
+                      </p>
                     </div>
-                    <p className="text-gray-600 leading-relaxed">{item.desc}</p>
                   </div>
                 </div>
               ))}
